@@ -5,101 +5,202 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hành trình của búp măng</title>
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
     <style>
+        :root {
+            --bg0: #fbf4e6;
+            --bg1: #f6efe1;
+            --surface: rgba(255, 255, 255, 0.96);
+            --surface-border: rgba(15, 23, 42, 0.10);
+            --text: #0f172a;
+            --muted: #475569;
+            --brand: #b30000;
+            --brand-dark: #7a0000;
+            --accent: #ffcc00;
+            --shadow: 0 16px 40px rgba(2, 6, 23, 0.18);
+            --shadow-sm: 0 10px 24px rgba(2, 6, 23, 0.12);
+            --radius: 16px;
+        }
+
+        * { box-sizing: border-box; }
+
         body {
             margin: 0;
-            font-family: Arial, sans-serif;
-            background: #f5f5f5;
-            color: #222;
+            font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+            color: var(--text);
+            line-height: 1.65;
+            background-color: var(--bg0);
+            background-image:
+                    radial-gradient(900px 460px at 14% 10%, rgba(255, 204, 0, 0.18), transparent 60%),
+                    radial-gradient(900px 520px at 86% 8%, rgba(179, 0, 0, 0.12), transparent 56%),
+                    repeating-linear-gradient(45deg, rgba(122, 0, 0, 0.06) 0 2px, transparent 2px 18px),
+                    repeating-linear-gradient(-45deg, rgba(255, 204, 0, 0.08) 0 2px, transparent 2px 18px),
+                    linear-gradient(180deg, var(--bg0) 0%, var(--bg1) 100%);
         }
 
         header {
-            background: linear-gradient(135deg, #b30000, #ffcc00);
             color: white;
             text-align: center;
-            padding: 40px 20px;
+            padding: 56px 20px 44px;
+            position: relative;
+            overflow: hidden;
+            background:
+                    radial-gradient(900px 380px at 25% 20%, rgba(255, 204, 0, 0.40), transparent 60%),
+                    radial-gradient(820px 420px at 80% 30%, rgba(255, 255, 255, 0.14), transparent 55%),
+                    linear-gradient(135deg, #7a0000, #b30000 45%, #ffcc00 120%);
+        }
+
+        header::after {
+            content: "";
+            position: absolute;
+            inset: -2px;
+            background:
+                    radial-gradient(600px 220px at 20% 15%, rgba(255, 255, 255, 0.14), transparent 60%),
+                    radial-gradient(520px 240px at 70% 25%, rgba(0, 0, 0, 0.18), transparent 55%);
+            pointer-events: none;
+            mix-blend-mode: overlay;
+            opacity: 0.9;
+        }
+
+        header > * {
+            position: relative;
+            z-index: 1;
         }
 
         header h1 {
             margin: 0;
-            font-size: 36px;
+            font-size: clamp(28px, 3.2vw, 44px);
+            letter-spacing: 0.3px;
+            text-transform: uppercase;
         }
 
         .symbol {
-            font-size: 28px;
-            margin-top: 10px;
+            margin-top: 12px;
+            font-size: 13px;
+            letter-spacing: 1.6px;
+            opacity: 0.92;
+            text-transform: uppercase;
+            display: inline-flex;
+            gap: 10px;
+            align-items: center;
+            padding: 10px 14px;
+            border-radius: 999px;
+            background: rgba(15, 23, 42, 0.20);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            backdrop-filter: blur(10px);
         }
 
         .container {
             max-width: 1100px;
-            margin: auto;
-            padding: 20px;
+            margin: 0 auto;
+            padding: 26px 18px 50px;
         }
 
-        .image-placeholder {
-            margin: 20px 0;
-        }
-
-        .image-placeholder img {
-            width: 100%;
-            max-width: 800px;
-            display: block;
-            margin: auto;
-            border-radius: 12px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-        }
-        
         section {
-            margin-bottom: 50px;
-            background: white;
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            max-width: 1100px;
+            margin: 18px auto;
+            background: var(--surface);
+            padding: 22px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--surface-border);
+            backdrop-filter: blur(10px);
+            transition: transform 180ms ease, box-shadow 180ms ease;
+        }
+
+        section:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
         }
 
         h2 {
-            color: #b30000;
+            color: var(--brand-dark);
+            margin: 0 0 10px;
+            font-size: 20px;
+            letter-spacing: 0.2px;
         }
+
+        p {
+            margin: 10px 0;
+            color: var(--text);
+        }
+
+        ul {
+            margin: 12px 0 0;
+            padding-left: 18px;
+            color: var(--text);
+        }
+
+        li { margin: 8px 0; }
 
         .image-placeholder {
-    margin: 20px 0;
-    text-align: center;
-}
-
-.image-placeholder img {
-    max-width: 100%;
-    height: auto;            /* 🔥 QUAN TRỌNG */
-    display: block;
-    margin: auto;
-    border-radius: 12px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-}
-
-        .image-placeholder img {
-    max-width: 700px;   /* giới hạn */
-    width: 100%;
-    height: auto;
-}
-
-        iframe {
             width: 100%;
-            max-width: 700px;
-            display: block;
-            margin: 20px auto;
-            border-radius: 10px;
+            margin: 14px 0 10px;
+            border-radius: 14px;
+            overflow: hidden;
+            border: 1px solid rgba(2, 6, 23, 0.10);
+            background: rgba(2, 6, 23, 0.04);
+            aspect-ratio: 16 / 9;
         }
 
-        footer {
-            background: #b30000;
-            color: white;
-            text-align: center;
-            padding: 20px;
+        .image-placeholder img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transform: translateZ(0);
+            transition: transform 220ms ease;
         }
 
         .image-placeholder img:hover {
-    transform: scale(1.02);
-    transition: 0.3s;
-}
+            transform: scale(1.02);
+        }
+
+        .image-placeholder.image-tall {
+            aspect-ratio: auto;
+        }
+
+        .image-placeholder.image-tall img {
+            height: auto;
+            object-fit: contain;
+            background: transparent;
+        }
+
+        iframe {
+            width: 100%;
+            max-width: 820px;
+            display: block;
+            margin: 16px auto 0;
+            border-radius: 14px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid rgba(2, 6, 23, 0.10);
+        }
+
+        footer {
+            margin-top: 14px;
+            background: linear-gradient(135deg, var(--brand-dark), var(--brand));
+            color: white;
+            text-align: center;
+            padding: 18px 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.10);
+        }
+
+        footer p {
+            margin: 0;
+            letter-spacing: 1.4px;
+            text-transform: uppercase;
+            font-size: 13px;
+            opacity: 0.92;
+            color: rgba(255, 255, 255, 0.92);
+        }
+
+        @media (max-width: 640px) {
+            header { padding: 44px 16px 34px; }
+            section { padding: 18px; }
+        }
     </style>
 
 </head>
@@ -110,7 +211,7 @@
     <div class="symbol">⭐ ☭ Tự hào Việt Nam ☭ ⭐</div>
 </header>
 
-    <section>
+<section>
     <h2>📸 Tổng quan mô hình</h2>
 
     <div class="image-placeholder">
@@ -120,7 +221,7 @@
 
 <div class="container">
 
-   
+
 
     <!-- GIỚI THIỆU -->
     <section>
@@ -173,7 +274,7 @@
     <section>
         <h2>🔺 Tầng ngọn – Đại hội V (1982)</h2>
 
-        <div class="image-placeholder">
+        <div class="image-placeholder image-tall">
             <img src="https://image2url.com/r2/default/images/1773735777905-16685028-f6a0-459f-a329-95da2f6e6312.png" alt="image" />
         </div>
 
@@ -190,14 +291,14 @@
     <section>
         <h2>🎯 Giá trị của mô hình</h2>
         <ul>
-            <li>📚 Giáo dục lịch sử trực quan</li>
-            <li>🎨 Thiết kế nghệ thuật sáng tạo</li>
-            <li>🇻🇳 Khơi dậy lòng tự hào dân tộc</li>
-            <li>🏫 Phù hợp trưng bày tại nhiều không gian</li>
+            <li>📚 Tư liệu trực quan phục vụ công tác tuyên truyền – giáo dục truyền thống</li>
+            <li>🏛️ Tăng tính hấp dẫn cho không gian trưng bày, giúp khách tham quan dễ tiếp cận nội dung</li>
+            <li>🧭 Gợi mở trải nghiệm tham quan theo mạch thời gian lịch sử, nhấn mạnh tinh thần đoàn kết dân tộc</li>
+            <li>🎟️ Hỗ trợ khách tham quan tự tìm hiểu thông tin, góp phần lan tỏa thông điệp lịch sử – văn hóa</li>
         </ul>
     </section>
 
-     <!-- VIDEO -->
+    <!-- VIDEO -->
     <section>
         <h2>🎬 Video giới thiệu</h2>
         <iframe width="560" height="315"
