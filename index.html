@@ -1,127 +1,180 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Video Introduction</title>
+    <title>Hành trình của búp măng</title>
+
     <style>
-        :root {
-            --bg: #0b1020;
-            --card: #121a33;
-            --text: #e9ecff;
-            --muted: #b8c0ff;
-            --accent: #7c5cff;
-        }
         body {
             margin: 0;
-            font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-            background: radial-gradient(1200px 600px at 10% 0%, #1a2a6c33, transparent),
-                        radial-gradient(1000px 500px at 90% 20%, #7c5cff22, transparent),
-                        var(--bg);
-            color: var(--text);
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+            color: #222;
         }
-        .container {
-            max-width: 980px;
-            margin: 0 auto;
-            padding: 28px 16px 48px;
+
+        header {
+            background: linear-gradient(135deg, #b30000, #ffcc00);
+            color: white;
+            text-align: center;
+            padding: 40px 20px;
         }
-        .header {
-            display: grid;
-            gap: 8px;
-            margin-bottom: 18px;
+
+        header h1 {
+            margin: 0;
+            font-size: 36px;
         }
-        .header h1 {
+
+        .symbol {
             font-size: 28px;
-            margin: 0;
-            letter-spacing: 0.2px;
+            margin-top: 10px;
         }
-        .header p {
-            margin: 0;
-            color: var(--muted);
-            line-height: 1.45;
+
+        .container {
+            max-width: 1100px;
+            margin: auto;
+            padding: 20px;
         }
-        .card {
-            background: linear-gradient(180deg, #ffffff10, transparent), var(--card);
-            border: 1px solid #ffffff1a;
-            border-radius: 16px;
-            padding: 16px;
-            box-shadow: 0 16px 40px #00000055;
-        }
-        .video-wrap {
-            position: relative;
-            width: 100%;
-            padding-top: 56.25%;
+
+        section {
+            margin-bottom: 50px;
+            background: white;
+            padding: 20px;
             border-radius: 12px;
-            overflow: hidden;
-            background: #000;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
-        .video-wrap iframe {
-            position: absolute;
-            inset: 0;
+
+        h2 {
+            color: #b30000;
+        }
+
+        .image-placeholder {
             width: 100%;
-            height: 100%;
-            border: 0;
-        }
-        .actions {
+            height: 300px;
+            background: #ddd;
+            border: 2px dashed #999;
             display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            margin-top: 14px;
-            align-items: center;
-            justify-content: space-between;
-        }
-        .btn {
-            display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
-            padding: 10px 14px;
-            border-radius: 12px;
-            border: 1px solid #ffffff24;
-            background: #ffffff10;
-            color: var(--text);
-            text-decoration: none;
-            font-weight: 600;
+            color: #666;
+            margin: 15px 0;
+            border-radius: 10px;
         }
-        .btn.primary {
-            background: linear-gradient(135deg, var(--accent), #4dd4ff);
-            border-color: transparent;
-            color: #0b1020;
+
+        iframe {
+            width: 100%;
+            max-width: 700px;
+            display: block;
+            margin: 20px auto;
+            border-radius: 10px;
         }
-        .hint {
-            color: var(--muted);
-            font-size: 13px;
-            line-height: 1.45;
-        }
-        code {
-            background: #00000033;
-            padding: 2px 6px;
-            border-radius: 8px;
-            border: 1px solid #ffffff1a;
+
+        footer {
+            background: #b30000;
+            color: white;
+            text-align: center;
+            padding: 20px;
         }
     </style>
+
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>Giới thiệu video YouTube</h1>
-            <p>Xem trực tiếp video ngay trên trang này hoặc bấm nút để mở trên YouTube.</p>
+
+<header>
+    <h1>🌱 HÀNH TRÌNH CỦA BÚP MĂNG</h1>
+    <div class="symbol">⭐ ☭ Tự hào Việt Nam ☭ ⭐</div>
+</header>
+
+<div class="container">
+
+    <!-- VIDEO -->
+    <section>
+        <h2>🎬 Video giới thiệu</h2>
+        <iframe width="560" height="315"
+                src="https://www.youtube.com/embed/18B7HhEYowA?si=1RAhP1FHEqjJ_RT8"
+                title="YouTube video player" frameborder="0" allowfullscreen></iframe>
+    </section>
+
+    <!-- GIỚI THIỆU -->
+    <section>
+        <h2>🌿 Giới thiệu mô hình</h2>
+        <p>
+            Trong dòng chảy lịch sử hào hùng của dân tộc Việt Nam, mỗi giai đoạn đều mang theo
+            những dấu ấn sâu sắc về ý chí, khát vọng và tinh thần vươn lên.
+        </p>
+        <p>
+            Lấy cảm hứng từ hình tượng <b>búp măng</b> – biểu tượng của sức sống, sự kế thừa và phát triển,
+            mô hình tái hiện hành trình của đất nước từ chiến tranh đến hòa bình và phát triển.
+        </p>
+    </section>
+
+    <!-- TẦNG 1 -->
+    <section>
+        <h2>🔻 Tầng gốc – Đại hội III (1960)</h2>
+
+        <div class="image-placeholder">
+            <img src="https://image2url.com/r2/default/images/1773735612533-54ded49b-f89b-44b1-a4df-a897acef43c4.png" alt="image" />
         </div>
 
-        <div class="card">
-            <div class="video-wrap">
-                <iframe width="560" height="315" src="https://www.youtube.com/embed/18B7HhEYowA?si=gAxfsBav9rf87j3C" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-            </div>
+        <p>
+            Giai đoạn đất nước bị chia cắt hai miền Nam – Bắc.
+            Miền Bắc xây dựng chủ nghĩa xã hội, miền Nam đấu tranh giải phóng.
+        </p>
+        <p>
+            Đây là nền móng của hành trình – nơi thể hiện khát vọng độc lập và thống nhất.
+        </p>
+    </section>
 
-            <div class="actions">
-                <a class="btn primary" href="https://www.youtube.com/watch?v=18B7HhEYowA" target="_blank" rel="noopener noreferrer">
-                    Mở video trên YouTube
-                </a>
-                <div class="hint">
-                    Thay <code>VIDEO_ID</code> bằng ID của video (vd: <code>watch?v=abc123</code> thì ID là <code>abc123</code>).
-                </div>
-            </div>
+    <!-- TẦNG 2 -->
+    <section>
+        <h2>🔶 Tầng giữa – Đại hội IV (1976)</h2>
+
+        <div class="image-placeholder">
+            <img src="https://image2url.com/r2/default/images/1773735676764-d3e024fd-8473-43bf-836a-0119ec41ddc6.png" alt="image" />
         </div>
-    </div>
+
+        <p>
+            Sau chiến thắng lịch sử 30/4/1975, đất nước thống nhất.
+            Hai miền đoàn tụ, bắt đầu công cuộc tái thiết.
+        </p>
+        <p>
+            Tầng này thể hiện tinh thần đoàn kết và hồi sinh mạnh mẽ.
+        </p>
+    </section>
+
+    <!-- TẦNG 3 -->
+    <section>
+        <h2>🔺 Tầng ngọn – Đại hội V (1982)</h2>
+
+        <div class="image-placeholder">
+            <img src="https://image2url.com/r2/default/images/1773735777905-16685028-f6a0-459f-a329-95da2f6e6312.png" alt="image" />
+        </div>
+
+        <p>
+            Đất nước bước vào thời kỳ phát triển kinh tế – xã hội.
+            Hình ảnh tàu thuyền, nhà máy, người lao động và người lính bảo vệ Tổ quốc.
+        </p>
+        <p>
+            Biểu tượng của một Việt Nam vươn cao nhưng luôn vững vàng.
+        </p>
+    </section>
+
+    <!-- GIÁ TRỊ -->
+    <section>
+        <h2>🎯 Giá trị của mô hình</h2>
+        <ul>
+            <li>📚 Giáo dục lịch sử trực quan</li>
+            <li>🎨 Thiết kế nghệ thuật sáng tạo</li>
+            <li>🇻🇳 Khơi dậy lòng tự hào dân tộc</li>
+            <li>🏫 Phù hợp trưng bày tại nhiều không gian</li>
+        </ul>
+    </section>
+
+</div>
+
+<footer>
+    <p>⭐ TỰ HÀO VIỆT NAM ⭐</p>
+</footer>
+
 </body>
 </html>
