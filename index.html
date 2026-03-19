@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hành trình của búp măng</title>
+    <title>Vươn Mình Non Sông</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
@@ -26,6 +26,70 @@
         header h1 {
             margin: 0;
             font-size: 36px;
+        }
+
+        header .tagline {
+            margin: 16px auto 0;
+            max-width: 980px;
+            font-size: 16px;
+            line-height: 1.7;
+            opacity: 0.95;
+            font-style: italic;
+            letter-spacing: 0.2px;
+            position: relative;
+            padding: 10px 16px;
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.22);
+            border-radius: 999px;
+            backdrop-filter: blur(6px);
+        }
+
+        header .tagline::before,
+        header .tagline::after {
+            content: "";
+            display: inline-block;
+            width: 48px;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.75);
+            vertical-align: middle;
+            margin: 0 12px;
+            border-radius: 999px;
+        }
+
+        @media (max-width: 600px) {
+            header {
+                padding: 38px 16px;
+            }
+
+            header h1 {
+                font-size: 26px;
+                line-height: 1.2;
+            }
+
+            header .tagline {
+                font-size: 14px;
+                line-height: 1.6;
+                border-radius: 14px;
+                padding: 10px 12px;
+            }
+
+            header .tagline::before,
+            header .tagline::after {
+                display: none;
+            }
+
+            .container {
+                padding: 14px;
+            }
+
+            section {
+                padding: 16px;
+            }
+
+            iframe {
+                height: auto;
+                aspect-ratio: 16 / 9;
+            }
         }
 
         .symbol {
@@ -89,8 +153,8 @@
 <body>
 
 <header>
-    <h1>🌱 HÀNH TRÌNH CỦA BÚP MĂNG</h1>
-    <div class="symbol">⭐ ☭ Tự hào Việt Nam ☭ ⭐</div>
+    <h1>VƯƠN MÌNH NON SÔNG</h1>
+    <p class="tagline">Hành trình vươn mình từ cội rễ gian khổ đến ngọn cờ vinh quang.</p>
 </header>
 
 <div class="container">
