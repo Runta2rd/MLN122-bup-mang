@@ -1,258 +1,1849 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vươn Mình Non Sông</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Smart Canteen – SAP Fiori</title>
+<style>
+  /* ── SAP Horizon Token System ───────────────────────────────────── */
+  :root {
+    --sapBrandColor: #0070f2;
+    --sapBrandColor-dark: #0057c2;
+    --sapBrandColor-light: #e8f3ff;
+    --sapHighlightColor: #0070f2;
+    --sapPositiveColor: #256f3a;
+    --sapPositiveBG: #f5faf6;
+    --sapNegativeColor: #aa0808;
+    --sapNegativeBG: #fff3f3;
+    --sapCriticalColor: #e76500;
+    --sapCriticalBG: #fff8f0;
+    --sapNeutralColor: #5b738b;
+    --sapNeutralBG: #f5f6f7;
+    --sapBaseColor: #ffffff;
+    --sapShellColor: #1b2b42;
+    --sapShell2: #243447;
+    --sapShellText: #ffffff;
+    --sapContent_LabelColor: #6a7a8b;
+    --sapContent_IconColor: #4a6079;
+    --sapGroup_TitleBG: #f2f5f7;
+    --sapList_BorderColor: #e4e8eb;
+    --sapList_HoverBG: #edf3fb;
+    --sapList_SelectionBG: #e8f3ff;
+    --sapField_BorderColor: #c5cdd3;
+    --sapField_Focus: #0070f2;
+    --sapButton_BorderRadius: 8px;
+    --sapCard_BorderRadius: 12px;
+    --sapTile_BorderRadius: 16px;
+    --sapFontFamily: "72", "72full", Arial, Helvetica, sans-serif;
+    --sapFontSize: 14px;
+    --sapFontHeader: 20px;
+    --sapFontLarge: 18px;
+    --sapShadow_Card: 0 2px 12px rgba(0,0,0,.08), 0 1px 4px rgba(0,0,0,.06);
+    --sapShadow_Tile: 0 4px 16px rgba(0,0,0,.1), 0 1px 6px rgba(0,0,0,.07);
+    --sapStatusIndicatorColor_Positive: #256f3a;
+    --sapStatusIndicatorColor_Critical: #e76500;
+    --sapStatusIndicatorColor_Negative: #aa0808;
+    --sapStatusIndicatorColor_Neutral: #5b738b;
+  }
 
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: var(--sapFontFamily); font-size: var(--sapFontSize); background: #f0f2f5; color: #1d2b3a; }
 
-    <style>
-        body {
-            margin: 0;
-            font-family: Inter, sans-serif;
-            background: #f5f5f5;
-            color: #222;
-        }
+  /* ── Shell Bar ─────────────────────────────────────────────────── */
+  .shell-bar {
+    background: var(--sapShellColor);
+    color: var(--sapShellText);
+    display: flex; align-items: center;
+    height: 44px; padding: 0 12px;
+    position: sticky; top: 0; z-index: 1000;
+    gap: 8px;
+  }
+  .shell-logo { display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: 15px; letter-spacing: .3px; }
+  .shell-logo .sap-diamond {
+    width: 28px; height: 28px; background: var(--sapBrandColor);
+    border-radius: 6px; display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 900; color: #fff;
+  }
+  .shell-divider { width: 1px; height: 24px; background: rgba(255,255,255,.2); margin: 0 8px; }
+  .shell-app-title { font-size: 14px; opacity: .9; }
+  .shell-spacer { flex: 1; }
+  .shell-actions { display: flex; gap: 4px; }
+  .shell-btn {
+    background: none; border: none; color: #fff; cursor: pointer;
+    width: 32px; height: 32px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; transition: background .15s;
+    position: relative;
+  }
+  .shell-btn:hover { background: rgba(255,255,255,.15); }
+  .shell-avatar {
+    width: 30px; height: 30px; border-radius: 50%;
+    background: var(--sapBrandColor); color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 700; cursor: pointer;
+  }
+  .badge {
+    position: absolute; top: 2px; right: 2px;
+    background: #e63946; color: #fff;
+    border-radius: 8px; min-width: 16px; height: 16px;
+    font-size: 10px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    padding: 0 4px;
+  }
 
-        /* ===== HEADER ===== */
-        header {
-            background: linear-gradient(135deg, #55672B, #354414);
-            color: white;
-            text-align: center;
-            padding: 60px 20px;
-        }
+  /* ── Role Bar ───────────────────────────────────────────────────── */
+  .role-bar {
+    background: var(--sapShell2);
+    display: flex; gap: 4px; padding: 6px 12px;
+    overflow-x: auto;
+  }
+  .role-btn {
+    background: none; border: 1px solid rgba(255,255,255,.25);
+    color: rgba(255,255,255,.8); padding: 4px 12px; border-radius: 20px;
+    font-size: 12px; cursor: pointer; white-space: nowrap;
+    transition: all .15s;
+  }
+  .role-btn.active, .role-btn:hover {
+    background: var(--sapBrandColor); border-color: var(--sapBrandColor);
+    color: #fff;
+  }
 
-        header h1 {
-            margin: 0;
-            font-size: 36px;
-        }
+  /* ── Nav Tabs ───────────────────────────────────────────────────── */
+  .screen-nav {
+    background: #fff; border-bottom: 1px solid var(--sapList_BorderColor);
+    display: flex; overflow-x: auto; gap: 0; padding: 0 16px;
+    position: sticky; top: 44px; z-index: 900;
+  }
+  .screen-tab {
+    background: none; border: none; border-bottom: 3px solid transparent;
+    padding: 10px 16px; font-size: 13px; color: var(--sapContent_LabelColor);
+    cursor: pointer; white-space: nowrap; font-family: inherit;
+    transition: all .15s;
+  }
+  .screen-tab.active {
+    color: var(--sapBrandColor); border-bottom-color: var(--sapBrandColor);
+    font-weight: 600;
+  }
+  .screen-tab:hover:not(.active) { color: #1d2b3a; background: var(--sapList_HoverBG); }
 
-        header .tagline {
-            margin: 16px auto 0;
-            max-width: 980px;
-            font-size: 16px;
-            line-height: 1.7;
-            opacity: 0.95;
-            font-style: italic;
-            letter-spacing: 0.2px;
-            position: relative;
-            padding: 10px 16px;
-            background: rgba(255, 255, 255, 0.12);
-            border: 1px solid rgba(255, 255, 255, 0.22);
-            border-radius: 999px;
-            backdrop-filter: blur(6px);
-        }
+  /* ── Page Container ─────────────────────────────────────────────── */
+  .page { display: none; padding: 16px; max-width: 1280px; margin: 0 auto; }
+  .page.active { display: block; }
 
-        header .tagline::before,
-        header .tagline::after {
-            content: "";
-            display: inline-block;
-            width: 48px;
-            height: 2px;
-            background: rgba(255, 255, 255, 0.75);
-            vertical-align: middle;
-            margin: 0 12px;
-            border-radius: 999px;
-        }
+  /* ── Page Header ────────────────────────────────────────────────── */
+  .page-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 16px;
+  }
+  .page-header-left { display: flex; align-items: center; gap: 12px; }
+  .page-title { font-size: 20px; font-weight: 700; color: #1d2b3a; }
+  .page-subtitle { font-size: 12px; color: var(--sapContent_LabelColor); margin-top: 2px; }
+  .breadcrumb { font-size: 12px; color: var(--sapContent_LabelColor); margin-bottom: 4px; }
+  .breadcrumb span { color: var(--sapBrandColor); cursor: pointer; }
 
-        @media (max-width: 600px) {
-            header {
-                padding: 38px 16px;
-            }
+  /* ── Cards & Tiles ──────────────────────────────────────────────── */
+  .card {
+    background: var(--sapBaseColor); border-radius: var(--sapCard_BorderRadius);
+    box-shadow: var(--sapShadow_Card); overflow: hidden;
+  }
+  .card-header {
+    padding: 14px 16px 10px; border-bottom: 1px solid var(--sapList_BorderColor);
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .card-title { font-size: 15px; font-weight: 600; }
+  .card-body { padding: 16px; }
 
-            header h1 {
-                font-size: 26px;
-                line-height: 1.2;
-            }
+  /* ── Launchpad Tiles ────────────────────────────────────────────── */
+  .launchpad-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 16px;
+  }
+  .lp-tile {
+    background: var(--sapBaseColor);
+    border-radius: var(--sapTile_BorderRadius);
+    box-shadow: var(--sapShadow_Tile);
+    padding: 20px 16px 16px;
+    cursor: pointer; transition: all .2s;
+    display: flex; flex-direction: column; align-items: flex-start;
+    min-height: 120px; position: relative; overflow: hidden;
+    border: 1.5px solid transparent;
+  }
+  .lp-tile:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,.12); border-color: var(--sapBrandColor-light); }
+  .lp-tile-icon { font-size: 28px; margin-bottom: 12px; }
+  .lp-tile-label { font-size: 13px; font-weight: 600; color: #1d2b3a; line-height: 1.3; }
+  .lp-tile-count { font-size: 22px; font-weight: 700; color: var(--sapBrandColor); margin-top: 4px; }
+  .lp-tile-accent {
+    position: absolute; bottom: 0; left: 0; right: 0; height: 4px;
+  }
+  .accent-blue { background: var(--sapBrandColor); }
+  .accent-green { background: var(--sapPositiveColor); }
+  .accent-orange { background: var(--sapCriticalColor); }
+  .accent-purple { background: #8142c8; }
+  .accent-teal { background: #0db0a0; }
+  .accent-red { background: var(--sapNegativeColor); }
+  .accent-indigo { background: #3d5af1; }
 
-            header .tagline {
-                font-size: 14px;
-                line-height: 1.6;
-                border-radius: 14px;
-                padding: 10px 12px;
-            }
+  /* ── Buttons ────────────────────────────────────────────────────── */
+  .btn {
+    border-radius: var(--sapButton_BorderRadius); font-family: inherit;
+    font-size: 13px; padding: 8px 16px; cursor: pointer; border: none;
+    font-weight: 600; transition: all .15s; display: inline-flex;
+    align-items: center; gap: 6px; text-decoration: none;
+  }
+  .btn-primary { background: var(--sapBrandColor); color: #fff; }
+  .btn-primary:hover { background: var(--sapBrandColor-dark); }
+  .btn-secondary { background: #fff; color: var(--sapBrandColor); border: 1.5px solid var(--sapBrandColor); }
+  .btn-secondary:hover { background: var(--sapBrandColor-light); }
+  .btn-ghost { background: none; color: var(--sapBrandColor); border: none; }
+  .btn-ghost:hover { background: var(--sapBrandColor-light); }
+  .btn-danger { background: var(--sapNegativeColor); color: #fff; }
+  .btn-success { background: var(--sapPositiveColor); color: #fff; }
+  .btn-sm { padding: 5px 10px; font-size: 12px; }
+  .btn-lg { padding: 12px 24px; font-size: 15px; }
+  .btn-block { width: 100%; justify-content: center; }
+  .btn-icon { width: 32px; height: 32px; padding: 0; justify-content: center; border-radius: 50%; }
 
-            header .tagline::before,
-            header .tagline::after {
-                display: none;
-            }
+  /* ── Form Controls ──────────────────────────────────────────────── */
+  .form-group { margin-bottom: 14px; }
+  .form-label { font-size: 12px; color: var(--sapContent_LabelColor); margin-bottom: 4px; display: block; font-weight: 500; }
+  .form-control {
+    width: 100%; border: 1.5px solid var(--sapField_BorderColor);
+    border-radius: 8px; padding: 8px 12px; font-size: 13px;
+    font-family: inherit; outline: none; transition: border .15s;
+    background: #fff;
+  }
+  .form-control:focus { border-color: var(--sapField_Focus); box-shadow: 0 0 0 3px rgba(0,112,242,.1); }
+  .search-wrap { position: relative; }
+  .search-wrap .search-icon { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: var(--sapContent_LabelColor); font-size: 14px; }
+  .search-wrap .form-control { padding-left: 32px; }
 
-            .container {
-                padding: 14px;
-            }
+  /* ── Status Badges ──────────────────────────────────────────────── */
+  .status-badge {
+    display: inline-flex; align-items: center; gap: 5px;
+    padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 600;
+  }
+  .status-pending { background: #fff3e0; color: #e76500; }
+  .status-confirmed { background: #e8f3ff; color: #0057c2; }
+  .status-preparing { background: #f3e8ff; color: #6b1fa0; }
+  .status-ready { background: #f5faf6; color: #256f3a; }
+  .status-delivering { background: #fff8e1; color: #c08000; }
+  .status-completed { background: #f0f4f0; color: #256f3a; }
+  .status-cancelled { background: #fff3f3; color: #aa0808; }
+  .status-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
 
-            section {
-                padding: 16px;
-            }
+  /* ── Product Grid ───────────────────────────────────────────────── */
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 14px;
+  }
+  .product-card {
+    background: #fff; border-radius: var(--sapCard_BorderRadius);
+    box-shadow: var(--sapShadow_Card); overflow: hidden;
+    cursor: pointer; transition: all .2s; border: 1.5px solid transparent;
+  }
+  .product-card:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,.1); border-color: var(--sapBrandColor-light); }
+  .product-img {
+    width: 100%; height: 130px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 52px; background: linear-gradient(135deg, #f0f4ff, #e8f3ff);
+  }
+  .product-info { padding: 10px 12px 12px; }
+  .product-name { font-size: 13px; font-weight: 600; margin-bottom: 4px; }
+  .product-price { font-size: 15px; font-weight: 700; color: var(--sapBrandColor); }
+  .product-stock { font-size: 11px; margin-top: 4px; }
+  .in-stock { color: var(--sapPositiveColor); }
+  .out-stock { color: var(--sapNegativeColor); }
+  .product-actions { padding: 0 12px 12px; }
 
-            iframe {
-                height: auto;
-                aspect-ratio: 16 / 9;
-            }
-        }
+  /* ── Category Pills ─────────────────────────────────────────────── */
+  .cat-pills { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+  .cat-pill {
+    padding: 5px 14px; border-radius: 20px; font-size: 12px; font-weight: 600;
+    cursor: pointer; border: 1.5px solid var(--sapField_BorderColor);
+    background: #fff; color: var(--sapContent_LabelColor); transition: all .15s;
+  }
+  .cat-pill.active, .cat-pill:hover {
+    background: var(--sapBrandColor); border-color: var(--sapBrandColor); color: #fff;
+  }
 
-        .symbol {
-            margin-top: 10px;
-        }
+  /* ── Cart / List ────────────────────────────────────────────────── */
+  .list-item {
+    display: flex; align-items: center; gap: 12px;
+    padding: 12px 0; border-bottom: 1px solid var(--sapList_BorderColor);
+  }
+  .list-item:last-child { border-bottom: none; }
+  .list-item-icon { width: 44px; height: 44px; border-radius: 8px; background: var(--sapBrandColor-light); display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
+  .list-item-body { flex: 1; }
+  .list-item-title { font-size: 13px; font-weight: 600; }
+  .list-item-sub { font-size: 12px; color: var(--sapContent_LabelColor); margin-top: 2px; }
+  .list-item-end { text-align: right; }
 
-        /* ===== CONTAINER ===== */
-        .container {
-            max-width: 1100px;
-            margin: auto;
-            padding: 20px;
-        }
+  /* ── Qty Stepper ────────────────────────────────────────────────── */
+  .qty-stepper { display: flex; align-items: center; gap: 8px; }
+  .qty-btn { width: 28px; height: 28px; border-radius: 50%; border: 1.5px solid var(--sapBrandColor); background: #fff; color: var(--sapBrandColor); font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-weight: 700; }
+  .qty-btn:hover { background: var(--sapBrandColor); color: #fff; }
+  .qty-val { font-size: 14px; font-weight: 700; min-width: 24px; text-align: center; }
 
-        /* ===== SECTION ===== */
-        section {
-            margin-bottom: 40px;
-            background: white;
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
+  /* ── Timeline ───────────────────────────────────────────────────── */
+  .timeline { position: relative; padding-left: 32px; }
+  .timeline::before { content: ''; position: absolute; left: 11px; top: 8px; bottom: 8px; width: 2px; background: var(--sapList_BorderColor); }
+  .timeline-item { position: relative; margin-bottom: 24px; }
+  .timeline-dot {
+    position: absolute; left: -32px; width: 24px; height: 24px;
+    border-radius: 50%; border: 2px solid var(--sapList_BorderColor);
+    background: #fff; display: flex; align-items: center; justify-content: center;
+    font-size: 11px;
+  }
+  .timeline-dot.done { background: var(--sapPositiveColor); border-color: var(--sapPositiveColor); color: #fff; }
+  .timeline-dot.active { background: var(--sapBrandColor); border-color: var(--sapBrandColor); color: #fff; animation: pulse 1.5s infinite; }
+  @keyframes pulse { 0%,100%{box-shadow:0 0 0 0 rgba(0,112,242,.4)} 50%{box-shadow:0 0 0 8px rgba(0,112,242,0)} }
+  .timeline-label { font-size: 13px; font-weight: 600; }
+  .timeline-sub { font-size: 12px; color: var(--sapContent_LabelColor); margin-top: 2px; }
 
-        h2 {
-            color: #354414;
-        }
+  /* ── KPI Cards ──────────────────────────────────────────────────── */
+  .kpi-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 14px; margin-bottom: 20px; }
+  .kpi-card {
+    background: #fff; border-radius: var(--sapCard_BorderRadius);
+    box-shadow: var(--sapShadow_Card); padding: 18px 20px;
+    border-left: 4px solid var(--sapBrandColor);
+    position: relative; overflow: hidden;
+  }
+  .kpi-label { font-size: 11px; color: var(--sapContent_LabelColor); font-weight: 600; text-transform: uppercase; letter-spacing: .5px; }
+  .kpi-value { font-size: 28px; font-weight: 800; color: #1d2b3a; margin: 6px 0 4px; }
+  .kpi-delta { font-size: 12px; display: flex; align-items: center; gap: 4px; }
+  .kpi-up { color: var(--sapPositiveColor); }
+  .kpi-down { color: var(--sapNegativeColor); }
+  .kpi-icon { position: absolute; right: 16px; top: 50%; transform: translateY(-50%); font-size: 36px; opacity: .12; }
 
-        /* ===== IMAGE ===== */
-        .image-placeholder {
-            margin: 20px 0;
-            text-align: center;
-        }
+  /* ── Table ──────────────────────────────────────────────────────── */
+  .table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .table th { background: var(--sapGroup_TitleBG); padding: 10px 14px; text-align: left; font-size: 11px; font-weight: 700; color: var(--sapContent_LabelColor); text-transform: uppercase; letter-spacing: .5px; border-bottom: 2px solid var(--sapList_BorderColor); }
+  .table td { padding: 12px 14px; border-bottom: 1px solid var(--sapList_BorderColor); vertical-align: middle; }
+  .table tr:hover td { background: var(--sapList_HoverBG); }
+  .table tr:last-child td { border-bottom: none; }
 
-        .image-placeholder img {
-            width: 100%;
-            max-width: 900px;
-            height: auto;
-            border-radius: 12px;
-        }
+  /* ── Progress Bar ───────────────────────────────────────────────── */
+  .progress-bar { height: 6px; background: #e4e8eb; border-radius: 3px; overflow: hidden; }
+  .progress-fill { height: 100%; border-radius: 3px; }
 
-        /* ===== VIDEO ===== */
-        iframe {
-            width: 100%;
-            max-width: 700px;
-            height: 400px;
-            display: block;
-            margin: 20px auto;
-            border-radius: 10px;
-        }
+  /* ── Star Rating ────────────────────────────────────────────────── */
+  .stars { color: #f5a623; font-size: 18px; letter-spacing: 2px; }
+  .star-empty { color: #d5d9de; }
 
-        /* ===== FOOTER ===== */
-        footer {
-            background: #b30000;
-            color: white;
-            text-align: center;
-            padding: 20px;
-        }
-    </style>
+  /* ── Voucher Card ───────────────────────────────────────────────── */
+  .voucher-card {
+    background: #fff; border-radius: 12px; box-shadow: var(--sapShadow_Card);
+    display: flex; overflow: hidden; border: 1.5px solid var(--sapList_BorderColor);
+  }
+  .voucher-left { background: linear-gradient(135deg, var(--sapBrandColor), #0057c2); color: #fff; padding: 16px; min-width: 110px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  .voucher-disc { font-size: 26px; font-weight: 900; line-height: 1; }
+  .voucher-type { font-size: 11px; opacity: .85; }
+  .voucher-notch { position: relative; }
+  .voucher-right { padding: 14px 16px; flex: 1; }
+  .voucher-name { font-size: 13px; font-weight: 700; }
+  .voucher-code { font-size: 11px; color: var(--sapContent_LabelColor); margin-top: 2px; font-family: monospace; }
+  .voucher-exp { font-size: 11px; color: var(--sapCriticalColor); margin-top: 6px; }
 
+  /* ── Wallet ─────────────────────────────────────────────────────── */
+  .wallet-hero {
+    background: linear-gradient(135deg, #1b2b42, #0057c2);
+    border-radius: 16px; padding: 28px 24px; color: #fff; margin-bottom: 20px;
+    position: relative; overflow: hidden;
+  }
+  .wallet-hero::after { content: ''; position: absolute; right: -20px; top: -20px; width: 140px; height: 140px; border-radius: 50%; background: rgba(255,255,255,.06); }
+  .wallet-label { font-size: 12px; opacity: .75; }
+  .wallet-amount { font-size: 40px; font-weight: 800; margin: 8px 0 4px; }
+  .wallet-sub { font-size: 12px; opacity: .7; }
+  .wallet-actions { display: flex; gap: 10px; margin-top: 16px; }
+  .wallet-action-btn { background: rgba(255,255,255,.2); border: 1.5px solid rgba(255,255,255,.3); color: #fff; padding: 8px 20px; border-radius: 8px; font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer; }
+  .wallet-action-btn:hover { background: rgba(255,255,255,.3); }
+
+  /* ── Delivery Section ────────────────────────────────────────────── */
+  .delivery-option {
+    border: 1.5px solid var(--sapField_BorderColor); border-radius: 10px;
+    padding: 14px; display: flex; align-items: flex-start; gap: 12px;
+    cursor: pointer; transition: all .15s; margin-bottom: 10px;
+  }
+  .delivery-option.selected { border-color: var(--sapBrandColor); background: var(--sapBrandColor-light); }
+  .radio-circle { width: 18px; height: 18px; border-radius: 50%; border: 2px solid var(--sapField_BorderColor); flex-shrink: 0; margin-top: 2px; position: relative; transition: all .15s; }
+  .delivery-option.selected .radio-circle { border-color: var(--sapBrandColor); }
+  .delivery-option.selected .radio-circle::after { content: ''; position: absolute; inset: 3px; border-radius: 50%; background: var(--sapBrandColor); }
+
+  /* ── Product Detail ─────────────────────────────────────────────── */
+  .detail-hero { display: flex; gap: 24px; align-items: flex-start; }
+  .detail-img { width: 240px; height: 240px; border-radius: 16px; background: linear-gradient(135deg, #e8f3ff, #d0e7ff); display: flex; align-items: center; justify-content: center; font-size: 96px; flex-shrink: 0; }
+
+  /* ── Section dividers ────────────────────────────────────────────── */
+  .section-title { font-size: 14px; font-weight: 700; color: #1d2b3a; margin: 20px 0 12px; display: flex; align-items: center; gap: 8px; }
+  .section-title::after { content: ''; flex: 1; height: 1px; background: var(--sapList_BorderColor); }
+
+  /* ── Two-column layout ───────────────────────────────────────────── */
+  .two-col { display: grid; grid-template-columns: 1fr 340px; gap: 16px; align-items: start; }
+  .three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+
+  /* ── Tabs inside page ────────────────────────────────────────────── */
+  .inner-tabs { display: flex; border-bottom: 1px solid var(--sapList_BorderColor); margin-bottom: 16px; }
+  .inner-tab { padding: 8px 16px; font-size: 13px; font-weight: 600; color: var(--sapContent_LabelColor); cursor: pointer; border-bottom: 2.5px solid transparent; }
+  .inner-tab.active { color: var(--sapBrandColor); border-bottom-color: var(--sapBrandColor); }
+
+  /* ── Misc ────────────────────────────────────────────────────────── */
+  .text-muted { color: var(--sapContent_LabelColor); font-size: 12px; }
+  .text-bold { font-weight: 700; }
+  .text-brand { color: var(--sapBrandColor); }
+  .text-positive { color: var(--sapPositiveColor); }
+  .text-negative { color: var(--sapNegativeColor); }
+  .text-critical { color: var(--sapCriticalColor); }
+  .gap-4 { gap: 4px; }
+  .mt-8 { margin-top: 8px; }
+  .mt-12 { margin-top: 12px; }
+  .mt-16 { margin-top: 16px; }
+  .mb-12 { margin-bottom: 12px; }
+  .mb-16 { margin-bottom: 16px; }
+  .flex { display: flex; }
+  .flex-col { flex-direction: column; }
+  .items-center { align-items: center; }
+  .justify-between { justify-content: space-between; }
+  .gap-8 { gap: 8px; }
+  .gap-12 { gap: 12px; }
+  .p-0 { padding: 0; }
+  .order-summary-row { display: flex; justify-content: space-between; padding: 6px 0; font-size: 13px; }
+  .order-summary-row.total { font-size: 15px; font-weight: 700; border-top: 1.5px solid var(--sapList_BorderColor); margin-top: 8px; padding-top: 10px; }
+  .tag { display: inline-flex; align-items: center; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; }
+  .tag-blue { background: #e8f3ff; color: #0057c2; }
+  .tag-green { background: #e6f4ea; color: #256f3a; }
+  .tag-orange { background: #fff3e0; color: #e76500; }
+  .info-box { background: var(--sapBrandColor-light); border-left: 3px solid var(--sapBrandColor); border-radius: 8px; padding: 12px 14px; font-size: 12px; color: #1d2b3a; margin-bottom: 14px; }
+  .divider { height: 1px; background: var(--sapList_BorderColor); margin: 16px 0; }
+  .empty-state { text-align: center; padding: 48px 24px; }
+  .empty-state-icon { font-size: 48px; margin-bottom: 12px; }
+  .empty-state-title { font-size: 16px; font-weight: 700; margin-bottom: 6px; }
+  .empty-state-sub { font-size: 13px; color: var(--sapContent_LabelColor); }
+  select.form-control { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236a7a8b' d='M6 8L1 3h10z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; padding-right: 32px; }
+
+  /* ── Floating Cart Hint ──────────────────────────────────────────── */
+  .floating-cart {
+    position: fixed; bottom: 24px; right: 24px;
+    background: var(--sapBrandColor); color: #fff;
+    border-radius: 28px; padding: 12px 22px; font-size: 14px; font-weight: 700;
+    box-shadow: 0 4px 16px rgba(0,112,242,.4); cursor: pointer;
+    display: flex; align-items: center; gap: 10px;
+    transition: all .2s; z-index: 500;
+  }
+  .floating-cart:hover { background: var(--sapBrandColor-dark); transform: translateY(-2px); }
+
+  /* ── Scrollbar ───────────────────────────────────────────────────── */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: #c5cdd3; border-radius: 3px; }
+
+  /* ── Chart placeholder ───────────────────────────────────────────── */
+  .chart-placeholder { height: 180px; display: flex; align-items: flex-end; gap: 8px; padding: 10px 0 0; }
+  .bar-wrap { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 6px; }
+  .bar { width: 100%; border-radius: 4px 4px 0 0; background: var(--sapBrandColor); opacity: .8; min-height: 4px; }
+  .bar-label { font-size: 10px; color: var(--sapContent_LabelColor); }
+
+  /* ── Responsive ──────────────────────────────────────────────────── */
+  @media (max-width: 900px) {
+    .two-col { grid-template-columns: 1fr; }
+    .three-col { grid-template-columns: 1fr 1fr; }
+    .detail-hero { flex-direction: column; }
+    .detail-img { width: 100%; }
+  }
+  @media (max-width: 600px) {
+    .product-grid { grid-template-columns: repeat(2, 1fr); }
+    .kpi-grid { grid-template-columns: 1fr 1fr; }
+    .launchpad-grid { grid-template-columns: repeat(3, 1fr); }
+    .three-col { grid-template-columns: 1fr; }
+  }
+</style>
 </head>
-
 <body>
 
-<header>
-    <h1>VƯƠN MÌNH NON SÔNG</h1>
-    <p class="tagline">Hành trình vươn mình từ cội rễ gian khổ đến ngọn cờ vinh quang.</p>
+<!-- ═══════════════════════════════════ SHELL BAR ═══════════════════════════════════ -->
+<header class="shell-bar">
+  <div class="shell-logo">
+    <div class="sap-diamond">S</div>
+    <span>Smart Canteen</span>
+  </div>
+  <div class="shell-divider"></div>
+  <span class="shell-app-title" id="shellAppTitle">Home</span>
+  <div class="shell-spacer"></div>
+  <div class="shell-actions">
+    <button class="shell-btn" title="Search">🔍</button>
+    <button class="shell-btn" title="Notifications" style="position:relative">
+      🔔 <span class="badge">3</span>
+    </button>
+    <div class="shell-avatar" title="Employee: Alex Nguyen">AN</div>
+  </div>
 </header>
 
-<div class="container">
-
-    <!-- TỔNG QUAN -->
-    <section>
-        <h2>📸 Tổng quan mô hình</h2>
-        <div class="image-placeholder">
-            <img src="https://image2url.com/r2/default/images/1773738066294-2f4c77df-f03f-42e8-be74-a480944f9f36.png">
-        </div>
-    </section>
-
-    <!-- GIỚI THIỆU -->
-    <section>
-        <h2>🌿 Giới thiệu mô hình</h2>
-        <p>
-            Trong dòng chảy lịch sử hào hùng của dân tộc Việt Nam, mỗi giai đoạn đều mang theo
-            những dấu ấn sâu sắc về ý chí, khát vọng và tinh thần vươn lên.
-        </p>
-        <p>
-            Lấy cảm hứng từ hình tượng <b>búp măng</b> – biểu tượng của sức sống, sự kế thừa và phát triển,
-            mô hình tái hiện hành trình của đất nước từ chiến tranh đến hòa bình và phát triển.
-        </p>
-    </section>
-
-    <!-- TẦNG 1 -->
-    <section>
-        <h2>🔻 Tầng gốc – Đại hội III (1960)</h2>
-
-        <div class="image-placeholder">
-            <img src="https://image2url.com/r2/default/images/1773735612533-54ded49b-f89b-44b1-a4df-a897acef43c4.png">
-        </div>
-
-        <p>
-            Giai đoạn đất nước bị chia cắt hai miền Nam – Bắc.
-            Miền Bắc tiến hành xây dựng chủ nghĩa xã hội, trong khi miền Nam tiếp tục đấu tranh chống lại sự xâm lược.
-        </p>
-
-        <p>
-            Đây là nền móng của hành trình phát triển, thể hiện tinh thần kiên cường và khát vọng thống nhất đất nước.
-        </p>
-    </section>
-
-    <!-- TẦNG 2 -->
-    <section>
-        <h2>🔶 Tầng giữa – Đại hội IV (1976)</h2>
-
-        <div class="image-placeholder">
-            <img src="https://image2url.com/r2/default/images/1773735676764-d3e024fd-8473-43bf-836a-0119ec41ddc6.png">
-        </div>
-
-        <p>
-            Sau chiến thắng lịch sử 30/4/1975, đất nước hoàn toàn thống nhất.
-            Bắc – Nam sum họp một nhà, mở ra thời kỳ mới.
-        </p>
-
-        <p>
-            Đây là giai đoạn chuyển mình từ chiến tranh sang hòa bình,
-            bắt đầu công cuộc tái thiết và xây dựng đất nước.
-        </p>
-    </section>
-
-    <!-- TẦNG 3 -->
-    <section>
-        <h2>🔺 Tầng ngọn – Đại hội V (1982)</h2>
-
-        <div class="image-placeholder">
-            <img src="https://image2url.com/r2/default/images/1773735777905-16685028-f6a0-459f-a329-95da2f6e6312.png">
-        </div>
-
-        <p>
-            Đất nước bước vào giai đoạn phát triển kinh tế – xã hội,
-            tập trung vào sản xuất và xây dựng.
-        </p>
-
-        <p>
-            Hình ảnh nhà máy, tàu thuyền, người lao động và lực lượng bảo vệ Tổ quốc
-            thể hiện một Việt Nam đang vươn lên mạnh mẽ.
-        </p>
-    </section>
-
-    <!-- GIÁ TRỊ -->
-    <section>
-        <h2>🎯 Giá trị của mô hình</h2>
-        <ul>
-            <li>📚 Giáo dục lịch sử trực quan</li>
-            <li>🎨 Thiết kế sáng tạo</li>
-            <li>🇻🇳 Khơi dậy lòng tự hào dân tộc</li>
-            <li>🏫 Phù hợp trưng bày</li>
-        </ul>
-    </section>
-
-
+<!-- ═══════════════════════════════════ ROLE BAR ════════════════════════════════════ -->
+<div class="role-bar">
+  <button class="role-btn active" onclick="switchRole(this,'employee')">👤 Employee</button>
+  <button class="role-btn" onclick="switchRole(this,'cashier')">💰 Cashier</button>
+  <button class="role-btn" onclick="switchRole(this,'delivery')">🛵 Delivery Staff</button>
+  <button class="role-btn" onclick="switchRole(this,'manager')">📊 Manager</button>
 </div>
 
-<footer>
-    <p>⭐ TỰ HÀO VIỆT NAM ⭐</p>
-</footer>
+<!-- ═══════════════════════════════════ SCREEN TABS ═════════════════════════════════ -->
+<nav class="screen-nav" id="screenNav">
+  <!-- populated by JS -->
+</nav>
 
+<!-- ══════════════════════════════════════════════════════════════════════════════════
+     SCREENS
+══════════════════════════════════════════════════════════════════════════════════════ -->
+
+<!-- ─────────────────────────── S1: LAUNCHPAD ──────────────────────────────────── -->
+<div class="page active" id="s1">
+  <div class="page-header mt-12">
+    <div>
+      <div class="page-title">👋 Good Morning, Alex</div>
+      <div class="page-subtitle">Monday, 14 Jun 2026 · InnoTech HQ Canteen</div>
+    </div>
+    <div class="tag tag-blue">Company Wallet: <strong style="margin-left:4px">VND 450,000</strong></div>
+  </div>
+  <div class="info-box mb-16">🎉 <strong>Flash Deal Today</strong> — Buy any 2 drinks, get a cookie free. Ends 15:00.</div>
+  <div class="launchpad-grid">
+    <div class="lp-tile" onclick="goTo('s2')">
+      <div class="lp-tile-icon">🍽️</div>
+      <div class="lp-tile-label">Browse Menu</div>
+      <div class="lp-tile-count">86</div>
+      <div class="lp-tile-accent accent-blue"></div>
+    </div>
+    <div class="lp-tile" onclick="goTo('s4')">
+      <div class="lp-tile-icon">🛒</div>
+      <div class="lp-tile-label">My Cart</div>
+      <div class="lp-tile-count">3</div>
+      <div class="lp-tile-accent accent-orange"></div>
+    </div>
+    <div class="lp-tile" onclick="goTo('s7')">
+      <div class="lp-tile-icon">📋</div>
+      <div class="lp-tile-label">My Orders</div>
+      <div class="lp-tile-count">12</div>
+      <div class="lp-tile-accent accent-green"></div>
+    </div>
+    <div class="lp-tile" onclick="goTo('s8')">
+      <div class="lp-tile-icon">💳</div>
+      <div class="lp-tile-label">Wallet</div>
+      <div class="lp-tile-count" style="font-size:16px">450K</div>
+      <div class="lp-tile-accent accent-teal"></div>
+    </div>
+    <div class="lp-tile" onclick="goTo('s9')">
+      <div class="lp-tile-icon">⭐</div>
+      <div class="lp-tile-label">Reward Points</div>
+      <div class="lp-tile-count">2,340</div>
+      <div class="lp-tile-accent accent-purple"></div>
+    </div>
+    <div class="lp-tile" onclick="goTo('s10')">
+      <div class="lp-tile-icon">🎟️</div>
+      <div class="lp-tile-label">Vouchers</div>
+      <div class="lp-tile-count">4</div>
+      <div class="lp-tile-accent accent-red"></div>
+    </div>
+    <div class="lp-tile" onclick="goTo('s11')">
+      <div class="lp-tile-icon">💬</div>
+      <div class="lp-tile-label">Feedback</div>
+      <div class="lp-tile-count" style="font-size:16px">Rate</div>
+      <div class="lp-tile-accent accent-indigo"></div>
+    </div>
+    <div class="lp-tile" onclick="goTo('s6')">
+      <div class="lp-tile-icon">📦</div>
+      <div class="lp-tile-label">Track Order</div>
+      <div class="lp-tile-count" style="font-size:14px">Preparing</div>
+      <div class="lp-tile-accent accent-orange"></div>
+    </div>
+  </div>
+
+  <div class="section-title mt-16">Recent Orders</div>
+  <div class="card">
+    <div class="card-body p-0">
+      <table class="table">
+        <thead>
+          <tr><th>Order #</th><th>Items</th><th>Date</th><th>Total</th><th>Status</th><th></th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="text-bold text-brand">#ORD-2026-0841</td>
+            <td>Cà phê sữa, Sandwich Tuna</td>
+            <td class="text-muted">Today 09:15</td>
+            <td class="text-bold">VND 52,000</td>
+            <td><span class="status-badge status-preparing"><span class="status-dot"></span>Preparing</span></td>
+            <td><button class="btn btn-ghost btn-sm" onclick="goTo('s6')">Track →</button></td>
+          </tr>
+          <tr>
+            <td class="text-bold text-brand">#ORD-2026-0839</td>
+            <td>Pepsi, Chips, Yogurt</td>
+            <td class="text-muted">Yesterday 14:30</td>
+            <td class="text-bold">VND 38,000</td>
+            <td><span class="status-badge status-completed"><span class="status-dot"></span>Completed</span></td>
+            <td><button class="btn btn-ghost btn-sm">Reorder</button></td>
+          </tr>
+          <tr>
+            <td class="text-bold text-brand">#ORD-2026-0835</td>
+            <td>Matcha Milk Tea, Snack</td>
+            <td class="text-muted">13 Jun 11:00</td>
+            <td class="text-bold">VND 45,000</td>
+            <td><span class="status-badge status-completed"><span class="status-dot"></span>Completed</span></td>
+            <td><button class="btn btn-ghost btn-sm">Reorder</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ─────────────────────────── S2: PRODUCT CATALOG ─────────────────────────────── -->
+<div class="page" id="s2">
+  <div class="page-header">
+    <div>
+      <div class="breadcrumb"><span onclick="goTo('s1')">Home</span> / Browse Menu</div>
+      <div class="page-title">Browse Menu</div>
+      <div class="page-subtitle">86 products · Updated today</div>
+    </div>
+    <div class="flex gap-8">
+      <button class="btn btn-secondary btn-sm">🔽 Sort</button>
+      <button class="btn btn-primary btn-sm" onclick="goTo('s4')">🛒 Cart (3)</button>
+    </div>
+  </div>
+  <div class="search-wrap mb-12">
+    <span class="search-icon">🔍</span>
+    <input class="form-control" placeholder="Search products, categories…" />
+  </div>
+  <div class="cat-pills">
+    <span class="cat-pill active">All (86)</span>
+    <span class="cat-pill">☕ Coffee (8)</span>
+    <span class="cat-pill">🍵 Tea (6)</span>
+    <span class="cat-pill">🥤 Soft Drinks (12)</span>
+    <span class="cat-pill">🍟 Snacks (22)</span>
+    <span class="cat-pill">🍜 Instant Food (10)</span>
+    <span class="cat-pill">🧴 Personal Care (14)</span>
+  </div>
+  <div class="product-grid">
+    <!-- Drinks -->
+    <div class="product-card" onclick="goTo('s3')">
+      <div class="product-img">☕</div>
+      <div class="product-info">
+        <div class="product-name">Cà Phê Sữa Đá</div>
+        <div class="product-price">VND 25,000</div>
+        <div class="product-stock in-stock">✓ In Stock (48)</div>
+      </div>
+      <div class="product-actions"><button class="btn btn-primary btn-sm btn-block">Add to Cart</button></div>
+    </div>
+    <div class="product-card">
+      <div class="product-img">🍵</div>
+      <div class="product-info">
+        <div class="product-name">Trà Đào Cam Sả</div>
+        <div class="product-price">VND 28,000</div>
+        <div class="product-stock in-stock">✓ In Stock (30)</div>
+      </div>
+      <div class="product-actions"><button class="btn btn-primary btn-sm btn-block">Add to Cart</button></div>
+    </div>
+    <div class="product-card">
+      <div class="product-img">🧋</div>
+      <div class="product-info">
+        <div class="product-name">Matcha Milk Tea</div>
+        <div class="product-price">VND 35,000</div>
+        <div class="product-stock in-stock">✓ In Stock (22)</div>
+      </div>
+      <div class="product-actions"><button class="btn btn-primary btn-sm btn-block">Add to Cart</button></div>
+    </div>
+    <div class="product-card">
+      <div class="product-img">🥤</div>
+      <div class="product-info">
+        <div class="product-name">Pepsi 330ml</div>
+        <div class="product-price">VND 15,000</div>
+        <div class="product-stock in-stock">✓ In Stock (60)</div>
+      </div>
+      <div class="product-actions"><button class="btn btn-primary btn-sm btn-block">Add to Cart</button></div>
+    </div>
+    <div class="product-card">
+      <div class="product-img">🥤</div>
+      <div class="product-info">
+        <div class="product-name">Coca-Cola 330ml</div>
+        <div class="product-price">VND 15,000</div>
+        <div class="product-stock in-stock">✓ In Stock (55)</div>
+      </div>
+      <div class="product-actions"><button class="btn btn-primary btn-sm btn-block">Add to Cart</button></div>
+    </div>
+    <div class="product-card">
+      <div class="product-img">⚡</div>
+      <div class="product-info">
+        <div class="product-name">Sting Energy 330ml</div>
+        <div class="product-price">VND 12,000</div>
+        <div class="product-stock in-stock">✓ In Stock (40)</div>
+      </div>
+      <div class="product-actions"><button class="btn btn-primary btn-sm btn-block">Add to Cart</button></div>
+    </div>
+    <div class="product-card">
+      <div class="product-img">💧</div>
+      <div class="product-info">
+        <div class="product-name">Aquafina 500ml</div>
+        <div class="product-price">VND 8,000</div>
+        <div class="product-stock in-stock">✓ In Stock (120)</div>
+      </div>
+      <div class="product-actions"><button class="btn btn-primary btn-sm btn-block">Add to Cart</button></div>
+    </div>
+    <!-- Snacks -->
+    <div class="product-card">
+      <div class="product-img">🍜</div>
+      <div class="product-info">
+        <div class="product-name">Mì Hảo Hảo Chua Cay</div>
+        <div class="product-price">VND 10,000</div>
+        <div class="product-stock in-stock">✓ In Stock (80)</div>
+      </div>
+      <div class="product-actions"><button class="btn btn-primary btn-sm btn-block">Add to Cart</button></div>
+    </div>
+    <div class="product-card">
+      <div class="product-img">🥪</div>
+      <div class="product-info">
+        <div class="product-name">Sandwich Tuna Mayo</div>
+        <div class="product-price">VND 32,000</div>
+        <div class="product-stock in-stock">✓ In Stock (15)</div>
+      </div>
+      <div class="product-actions"><button class="btn btn-primary btn-sm btn-block">Add to Cart</button></div>
+    </div>
+    <div class="product-card">
+      <div class="product-img">🍫</div>
+      <div class="product-info">
+        <div class="product-name">KitKat 4 Fingers</div>
+        <div class="product-price">VND 22,000</div>
+        <div class="product-stock in-stock">✓ In Stock (35)</div>
+      </div>
+      <div class="product-actions"><button class="btn btn-primary btn-sm btn-block">Add to Cart</button></div>
+    </div>
+    <div class="product-card">
+      <div class="product-img">🍟</div>
+      <div class="product-info">
+        <div class="product-name">Pringles Original</div>
+        <div class="product-price">VND 45,000</div>
+        <div class="product-stock out-stock">✗ Out of Stock</div>
+      </div>
+      <div class="product-actions"><button class="btn btn-secondary btn-sm btn-block" disabled>Notify Me</button></div>
+    </div>
+    <div class="product-card">
+      <div class="product-img">🍦</div>
+      <div class="product-info">
+        <div class="product-name">Kem Tươi Que</div>
+        <div class="product-price">VND 18,000</div>
+        <div class="product-stock in-stock">✓ In Stock (20)</div>
+      </div>
+      <div class="product-actions"><button class="btn btn-primary btn-sm btn-block">Add to Cart</button></div>
+    </div>
+  </div>
+  <div class="floating-cart" onclick="goTo('s4')">🛒 View Cart · 3 items · VND 92,000</div>
+</div>
+
+<!-- ─────────────────────────── S3: PRODUCT DETAIL ──────────────────────────────── -->
+<div class="page" id="s3">
+  <div class="page-header">
+    <div>
+      <div class="breadcrumb"><span onclick="goTo('s1')">Home</span> / <span onclick="goTo('s2')">Browse Menu</span> / Coffee</div>
+      <div class="page-title">Product Detail</div>
+    </div>
+    <button class="btn btn-primary btn-sm" onclick="goTo('s4')">🛒 Cart (3)</button>
+  </div>
+  <div class="card">
+    <div class="card-body">
+      <div class="detail-hero">
+        <div class="detail-img">☕</div>
+        <div style="flex:1">
+          <div class="tag tag-blue mb-12">☕ Coffee</div>
+          <h2 style="font-size:24px;font-weight:800;margin-bottom:8px">Cà Phê Sữa Đá</h2>
+          <div style="font-size:28px;font-weight:800;color:var(--sapBrandColor);margin-bottom:12px">VND 25,000</div>
+          <div class="flex items-center gap-8 mb-12">
+            <div class="stars">★★★★☆</div>
+            <span class="text-muted">4.2 (156 reviews)</span>
+          </div>
+          <div class="flex gap-8 mb-16">
+            <span class="status-badge status-ready"><span class="status-dot"></span>In Stock · 48 units</span>
+            <span class="tag tag-green">🔥 Popular</span>
+          </div>
+          <p style="font-size:13px;color:#4a5568;line-height:1.7;margin-bottom:20px">
+            Authentic Vietnamese iced milk coffee made with premium Arabica beans from Đà Lạt highlands. Prepared fresh daily with sweetened condensed milk over ice. A canteen favorite — energize your afternoon!
+          </p>
+          <div class="divider"></div>
+          <div class="section-title" style="margin-top:12px">Quantity</div>
+          <div class="flex items-center gap-12 mb-16">
+            <div class="qty-stepper">
+              <button class="qty-btn">−</button>
+              <span class="qty-val">1</span>
+              <button class="qty-btn">+</button>
+            </div>
+            <span class="text-muted">Max 10 per order</span>
+          </div>
+          <div class="flex gap-8">
+            <button class="btn btn-primary btn-lg" style="flex:1">🛒 Add to Cart</button>
+            <button class="btn btn-secondary btn-lg" style="flex:1" onclick="goTo('s4')">⚡ Buy Now</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-title">Nutritional Info</div>
+      <div class="three-col">
+        <div style="text-align:center;padding:12px;background:#f5f6f7;border-radius:8px">
+          <div style="font-size:20px;font-weight:800;color:var(--sapBrandColor)">95</div>
+          <div class="text-muted">Calories</div>
+        </div>
+        <div style="text-align:center;padding:12px;background:#f5f6f7;border-radius:8px">
+          <div style="font-size:20px;font-weight:800;color:var(--sapBrandColor)">80mg</div>
+          <div class="text-muted">Caffeine</div>
+        </div>
+        <div style="text-align:center;padding:12px;background:#f5f6f7;border-radius:8px">
+          <div style="font-size:20px;font-weight:800;color:var(--sapBrandColor)">14g</div>
+          <div class="text-muted">Sugar</div>
+        </div>
+      </div>
+
+      <div class="section-title">Customer Reviews</div>
+      <div class="list-item">
+        <div class="list-item-icon">👤</div>
+        <div class="list-item-body">
+          <div class="list-item-title">Minh Tran <span class="stars" style="font-size:13px">★★★★★</span></div>
+          <div class="text-muted">The best coffee in the office! Always fresh and strong.</div>
+        </div>
+        <div class="list-item-end text-muted" style="font-size:11px">2 days ago</div>
+      </div>
+      <div class="list-item">
+        <div class="list-item-icon">👤</div>
+        <div class="list-item-body">
+          <div class="list-item-title">Linh Pham <span class="stars" style="font-size:13px">★★★★<span class="star-empty">★</span></span></div>
+          <div class="text-muted">Good flavor, sometimes a bit sweet. Overall great value.</div>
+        </div>
+        <div class="list-item-end text-muted" style="font-size:11px">1 week ago</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ─────────────────────────── S4: SHOPPING CART ───────────────────────────────── -->
+<div class="page" id="s4">
+  <div class="page-header">
+    <div>
+      <div class="breadcrumb"><span onclick="goTo('s1')">Home</span> / Shopping Cart</div>
+      <div class="page-title">Shopping Cart</div>
+      <div class="page-subtitle">3 items</div>
+    </div>
+    <button class="btn btn-ghost btn-sm" onclick="goTo('s2')">← Continue Shopping</button>
+  </div>
+  <div class="two-col">
+    <div>
+      <div class="card mb-16">
+        <div class="card-header">
+          <span class="card-title">Items (3)</span>
+          <button class="btn btn-ghost btn-sm text-negative">🗑 Clear Cart</button>
+        </div>
+        <div class="card-body">
+          <div class="list-item">
+            <div class="list-item-icon">☕</div>
+            <div class="list-item-body">
+              <div class="list-item-title">Cà Phê Sữa Đá</div>
+              <div class="text-muted">VND 25,000 each</div>
+            </div>
+            <div class="list-item-end flex items-center gap-12">
+              <div class="qty-stepper"><button class="qty-btn">−</button><span class="qty-val">1</span><button class="qty-btn">+</button></div>
+              <div style="min-width:72px;text-align:right"><span class="text-bold">VND 25,000</span></div>
+              <button class="btn btn-icon" style="color:var(--sapNegativeColor)">✕</button>
+            </div>
+          </div>
+          <div class="list-item">
+            <div class="list-item-icon">🥪</div>
+            <div class="list-item-body">
+              <div class="list-item-title">Sandwich Tuna Mayo</div>
+              <div class="text-muted">VND 32,000 each</div>
+            </div>
+            <div class="list-item-end flex items-center gap-12">
+              <div class="qty-stepper"><button class="qty-btn">−</button><span class="qty-val">1</span><button class="qty-btn">+</button></div>
+              <div style="min-width:72px;text-align:right"><span class="text-bold">VND 32,000</span></div>
+              <button class="btn btn-icon" style="color:var(--sapNegativeColor)">✕</button>
+            </div>
+          </div>
+          <div class="list-item">
+            <div class="list-item-icon">🥤</div>
+            <div class="list-item-body">
+              <div class="list-item-title">Pepsi 330ml</div>
+              <div class="text-muted">VND 15,000 each</div>
+            </div>
+            <div class="list-item-end flex items-center gap-12">
+              <div class="qty-stepper"><button class="qty-btn">−</button><span class="qty-val">1</span><button class="qty-btn">+</button></div>
+              <div style="min-width:72px;text-align:right"><span class="text-bold">VND 15,000</span></div>
+              <button class="btn btn-icon" style="color:var(--sapNegativeColor)">✕</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header"><span class="card-title">🎟️ Apply Voucher</span></div>
+        <div class="card-body">
+          <div class="flex gap-8">
+            <input class="form-control" placeholder="Enter voucher code e.g. WELCOME10" style="flex:1" value="STAFF20" />
+            <button class="btn btn-primary">Apply</button>
+          </div>
+          <div class="info-box mt-12" style="margin-bottom:0">✅ Voucher <strong>STAFF20</strong> applied — 20% off your order! Saving VND 14,400</div>
+        </div>
+      </div>
+    </div>
+    <!-- Summary -->
+    <div>
+      <div class="card">
+        <div class="card-header"><span class="card-title">Order Summary</span></div>
+        <div class="card-body">
+          <div class="order-summary-row"><span class="text-muted">Subtotal (3 items)</span><span>VND 72,000</span></div>
+          <div class="order-summary-row"><span class="text-muted">Delivery Fee</span><span>VND 5,000</span></div>
+          <div class="order-summary-row text-positive"><span>🎟️ Voucher STAFF20</span><span>− VND 14,400</span></div>
+          <div class="order-summary-row total"><span>Total</span><span class="text-brand">VND 62,600</span></div>
+          <button class="btn btn-primary btn-lg btn-block mt-16" onclick="goTo('s5')">Proceed to Checkout →</button>
+          <div class="text-muted" style="text-align:center;margin-top:10px;font-size:11px">🔒 Secure checkout via InnoTech Pay</div>
+        </div>
+      </div>
+      <div class="card mt-12">
+        <div class="card-body">
+          <div class="text-muted mb-12" style="font-size:12px;font-weight:700;text-transform:uppercase">You May Also Like</div>
+          <div class="list-item" style="padding:6px 0">
+            <div class="list-item-icon" style="width:36px;height:36px;font-size:18px">🍫</div>
+            <div class="list-item-body"><div style="font-size:12px;font-weight:600">KitKat 4 Fingers</div></div>
+            <button class="btn btn-primary btn-sm">+ VND 22K</button>
+          </div>
+          <div class="list-item" style="padding:6px 0;border:none">
+            <div class="list-item-icon" style="width:36px;height:36px;font-size:18px">🍦</div>
+            <div class="list-item-body"><div style="font-size:12px;font-weight:600">Kem Tươi Que</div></div>
+            <button class="btn btn-primary btn-sm">+ VND 18K</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ─────────────────────────── S5: CHECKOUT ────────────────────────────────────── -->
+<div class="page" id="s5">
+  <div class="page-header">
+    <div>
+      <div class="breadcrumb"><span onclick="goTo('s1')">Home</span> / <span onclick="goTo('s4')">Cart</span> / Checkout</div>
+      <div class="page-title">Checkout</div>
+    </div>
+  </div>
+  <div class="two-col">
+    <div>
+      <!-- Delivery Method -->
+      <div class="card mb-16">
+        <div class="card-header"><span class="card-title">🚚 Delivery Method</span></div>
+        <div class="card-body">
+          <div class="delivery-option selected">
+            <div class="radio-circle"></div>
+            <div>
+              <div class="text-bold">🏪 Self Pickup</div>
+              <div class="text-muted mt-8">Collect at Canteen Counter B1-F1 · Ready in ~15 min · Free</div>
+            </div>
+          </div>
+          <div class="delivery-option">
+            <div class="radio-circle"></div>
+            <div style="flex:1">
+              <div class="text-bold">📦 Department Delivery</div>
+              <div class="text-muted mt-8">Delivered to your desk · VND 5,000 · ~30 min</div>
+              <div class="three-col" style="margin-top:10px;gap:8px">
+                <div class="form-group" style="margin:0">
+                  <label class="form-label">Building</label>
+                  <select class="form-control"><option>Tower A</option><option>Tower B</option><option>Tower C</option></select>
+                </div>
+                <div class="form-group" style="margin:0">
+                  <label class="form-label">Floor</label>
+                  <select class="form-control"><option>F5</option><option>F6</option><option>F7</option><option>F8</option></select>
+                </div>
+                <div class="form-group" style="margin:0">
+                  <label class="form-label">Department</label>
+                  <select class="form-control"><option>Engineering</option><option>HR</option><option>Finance</option><option>Sales</option></select>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Payment Method -->
+      <div class="card mb-16">
+        <div class="card-header"><span class="card-title">💳 Payment Method</span></div>
+        <div class="card-body">
+          <div class="delivery-option selected">
+            <div class="radio-circle"></div>
+            <div>
+              <div class="text-bold">💳 Company Wallet</div>
+              <div class="text-muted mt-8">Available Balance: <strong class="text-positive">VND 450,000</strong></div>
+            </div>
+          </div>
+          <div class="delivery-option">
+            <div class="radio-circle"></div>
+            <div>
+              <div class="text-bold">💰 Payroll Deduction</div>
+              <div class="text-muted mt-8">Amount deducted from June 2026 salary</div>
+            </div>
+          </div>
+          <div class="delivery-option">
+            <div class="radio-circle"></div>
+            <div>
+              <div class="text-bold">⭐ Reward Points</div>
+              <div class="text-muted mt-8">Available: <strong>2,340 pts</strong> = VND 23,400 · Shortfall: VND 39,200</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Voucher -->
+      <div class="card">
+        <div class="card-header"><span class="card-title">🎟️ Voucher</span></div>
+        <div class="card-body">
+          <div class="voucher-card">
+            <div class="voucher-left"><div class="voucher-disc">20%</div><div class="voucher-type">OFF</div></div>
+            <div class="voucher-right">
+              <div class="voucher-name">Staff Loyalty Discount</div>
+              <div class="voucher-code">Code: STAFF20</div>
+              <div class="voucher-exp">⏰ Expires: 30 Jun 2026</div>
+            </div>
+            <button class="btn btn-danger btn-sm" style="margin:auto 12px auto 0;align-self:center">Remove</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Order Summary -->
+    <div>
+      <div class="card" style="position:sticky;top:100px">
+        <div class="card-header"><span class="card-title">Order Summary</span></div>
+        <div class="card-body">
+          <div class="list-item" style="padding:8px 0"><div class="list-item-icon" style="font-size:18px;width:36px;height:36px">☕</div><div class="list-item-body"><div style="font-size:12px;font-weight:600">Cà Phê Sữa Đá ×1</div></div><div class="text-bold" style="font-size:12px">VND 25,000</div></div>
+          <div class="list-item" style="padding:8px 0"><div class="list-item-icon" style="font-size:18px;width:36px;height:36px">🥪</div><div class="list-item-body"><div style="font-size:12px;font-weight:600">Sandwich Tuna ×1</div></div><div class="text-bold" style="font-size:12px">VND 32,000</div></div>
+          <div class="list-item" style="padding:8px 0;border:none"><div class="list-item-icon" style="font-size:18px;width:36px;height:36px">🥤</div><div class="list-item-body"><div style="font-size:12px;font-weight:600">Pepsi 330ml ×1</div></div><div class="text-bold" style="font-size:12px">VND 15,000</div></div>
+          <div class="divider"></div>
+          <div class="order-summary-row"><span class="text-muted">Subtotal</span><span>VND 72,000</span></div>
+          <div class="order-summary-row"><span class="text-muted">Delivery</span><span class="text-positive">Free (Pickup)</span></div>
+          <div class="order-summary-row text-positive"><span>Voucher STAFF20</span><span>− VND 14,400</span></div>
+          <div class="order-summary-row total"><span>Total</span><span class="text-brand">VND 57,600</span></div>
+          <button class="btn btn-primary btn-lg btn-block mt-16" onclick="goTo('s6')">✅ Place Order</button>
+          <div class="text-muted" style="text-align:center;margin-top:8px;font-size:11px">By placing your order you agree to Canteen T&C</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ─────────────────────────── S6: ORDER TRACKING ──────────────────────────────── -->
+<div class="page" id="s6">
+  <div class="page-header">
+    <div>
+      <div class="breadcrumb"><span onclick="goTo('s1')">Home</span> / Track Order</div>
+      <div class="page-title">Order Tracking</div>
+    </div>
+    <button class="btn btn-secondary btn-sm" onclick="goTo('s7')">All Orders</button>
+  </div>
+  <div class="two-col">
+    <div>
+      <!-- Order Info -->
+      <div class="card mb-16">
+        <div class="card-body">
+          <div class="flex justify-between items-center mb-12">
+            <div><div class="text-muted" style="font-size:11px">ORDER NUMBER</div><div style="font-size:18px;font-weight:800;color:var(--sapBrandColor)">#ORD-2026-0841</div></div>
+            <span class="status-badge status-preparing" style="font-size:13px;padding:6px 14px"><span class="status-dot"></span>Preparing</span>
+          </div>
+          <div class="three-col" style="gap:8px">
+            <div style="background:#f5f6f7;padding:10px;border-radius:8px"><div class="text-muted" style="font-size:11px">Ordered At</div><div style="font-size:13px;font-weight:700">09:15 AM</div></div>
+            <div style="background:#f5f6f7;padding:10px;border-radius:8px"><div class="text-muted" style="font-size:11px">Est. Ready</div><div style="font-size:13px;font-weight:700">09:30 AM</div></div>
+            <div style="background:#f5f6f7;padding:10px;border-radius:8px"><div class="text-muted" style="font-size:11px">Method</div><div style="font-size:13px;font-weight:700">🏪 Pickup</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Timeline -->
+      <div class="card mb-16">
+        <div class="card-header"><span class="card-title">📍 Live Status</span></div>
+        <div class="card-body">
+          <div class="timeline">
+            <div class="timeline-item">
+              <div class="timeline-dot done">✓</div>
+              <div class="timeline-label">Order Placed</div>
+              <div class="timeline-sub">09:15 AM · Payment confirmed via Company Wallet</div>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-dot done">✓</div>
+              <div class="timeline-label">Order Confirmed</div>
+              <div class="timeline-sub">09:16 AM · Canteen accepted your order</div>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-dot active">⚡</div>
+              <div class="timeline-label">Preparing</div>
+              <div class="timeline-sub">09:18 AM · Kitchen is preparing your items now</div>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-dot"></div>
+              <div class="timeline-label" style="color:var(--sapContent_LabelColor)">Ready for Pickup</div>
+              <div class="timeline-sub">Estimated 09:30 AM</div>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-dot"></div>
+              <div class="timeline-label" style="color:var(--sapContent_LabelColor)">Completed</div>
+              <div class="timeline-sub">Awaiting your collection at Counter B1-F1</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="card mb-16">
+        <div class="card-header"><span class="card-title">🧾 Order Items</span></div>
+        <div class="card-body">
+          <div class="list-item"><div class="list-item-icon">☕</div><div class="list-item-body"><div class="list-item-title">Cà Phê Sữa Đá</div><div class="text-muted">×1</div></div><div class="text-bold">VND 25,000</div></div>
+          <div class="list-item"><div class="list-item-icon">🥪</div><div class="list-item-body"><div class="list-item-title">Sandwich Tuna Mayo</div><div class="text-muted">×1</div></div><div class="text-bold">VND 32,000</div></div>
+          <div class="list-item" style="border:none"><div class="list-item-icon">🥤</div><div class="list-item-body"><div class="list-item-title">Pepsi 330ml</div><div class="text-muted">×1</div></div><div class="text-bold">VND 15,000</div></div>
+          <div class="divider"></div>
+          <div class="order-summary-row total"><span>Total Paid</span><span class="text-brand">VND 57,600</span></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-body">
+          <div class="text-bold mb-12">🏪 Pickup Location</div>
+          <div style="background:#f5f6f7;border-radius:8px;padding:14px">
+            <div style="font-size:13px;font-weight:600">InnoTech Canteen B1</div>
+            <div class="text-muted mt-8">Counter B · Ground Floor · Near Main Lobby</div>
+            <div class="text-muted mt-8">Open: 07:00 – 19:00</div>
+          </div>
+          <button class="btn btn-secondary btn-block mt-12">🗺 Get Directions</button>
+          <button class="btn btn-danger btn-block mt-8">✕ Cancel Order</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ─────────────────────────── S7: ORDER HISTORY ───────────────────────────────── -->
+<div class="page" id="s7">
+  <div class="page-header">
+    <div>
+      <div class="breadcrumb"><span onclick="goTo('s1')">Home</span> / My Orders</div>
+      <div class="page-title">My Orders</div>
+      <div class="page-subtitle">12 orders · June 2026</div>
+    </div>
+  </div>
+  <div class="flex gap-8 mb-16">
+    <div class="search-wrap" style="flex:1"><span class="search-icon">🔍</span><input class="form-control" placeholder="Search orders…" /></div>
+    <select class="form-control" style="width:150px"><option>All Status</option><option>Pending</option><option>Completed</option><option>Cancelled</option></select>
+    <select class="form-control" style="width:150px"><option>This Month</option><option>Last Month</option><option>Last 3 Months</option></select>
+  </div>
+  <div class="card">
+    <div class="card-body p-0">
+      <table class="table">
+        <thead>
+          <tr><th>Order #</th><th>Date & Time</th><th>Items</th><th>Delivery</th><th>Payment</th><th>Total</th><th>Status</th><th>Actions</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="text-bold text-brand">#ORD-2026-0841</td><td class="text-muted">14 Jun 09:15</td><td>Cà Phê Sữa, Sandwich, Pepsi</td><td>🏪 Pickup</td><td>💳 Wallet</td><td class="text-bold">VND 57,600</td><td><span class="status-badge status-preparing"><span class="status-dot"></span>Preparing</span></td><td><button class="btn btn-ghost btn-sm" onclick="goTo('s6')">Track</button></td></tr>
+          <tr><td class="text-bold text-brand">#ORD-2026-0839</td><td class="text-muted">13 Jun 14:30</td><td>Pepsi, Chips, Yogurt</td><td>📦 Delivery</td><td>⭐ Points</td><td class="text-bold">VND 38,000</td><td><span class="status-badge status-completed"><span class="status-dot"></span>Completed</span></td><td><button class="btn btn-ghost btn-sm">Reorder</button> <button class="btn btn-ghost btn-sm" onclick="goTo('s11')">Rate</button></td></tr>
+          <tr><td class="text-bold text-brand">#ORD-2026-0835</td><td class="text-muted">13 Jun 11:00</td><td>Matcha Milk Tea, Snack Box</td><td>📦 Delivery</td><td>💳 Wallet</td><td class="text-bold">VND 45,000</td><td><span class="status-badge status-completed"><span class="status-dot"></span>Completed</span></td><td><button class="btn btn-ghost btn-sm">Reorder</button></td></tr>
+          <tr><td class="text-bold text-brand">#ORD-2026-0828</td><td class="text-muted">12 Jun 09:05</td><td>Cà Phê Đen, KitKat</td><td>🏪 Pickup</td><td>💰 Payroll</td><td class="text-bold">VND 35,000</td><td><span class="status-badge status-completed"><span class="status-dot"></span>Completed</span></td><td><button class="btn btn-ghost btn-sm">Reorder</button></td></tr>
+          <tr><td class="text-bold text-brand">#ORD-2026-0820</td><td class="text-muted">11 Jun 15:30</td><td>Ice Cream, Aquafina</td><td>🏪 Pickup</td><td>💳 Wallet</td><td class="text-bold">VND 26,000</td><td><span class="status-badge status-cancelled"><span class="status-dot"></span>Cancelled</span></td><td><button class="btn btn-ghost btn-sm">Reorder</button></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ─────────────────────────── S8: WALLET ──────────────────────────────────────── -->
+<div class="page" id="s8">
+  <div class="page-header">
+    <div>
+      <div class="breadcrumb"><span onclick="goTo('s1')">Home</span> / Wallet</div>
+      <div class="page-title">Company Wallet</div>
+    </div>
+  </div>
+  <div class="wallet-hero">
+    <div class="wallet-label">AVAILABLE BALANCE</div>
+    <div class="wallet-amount">VND 450,000</div>
+    <div class="wallet-sub">Alex Nguyen · EMP-00412 · InnoTech HQ</div>
+    <div class="wallet-actions">
+      <button class="wallet-action-btn">⬆ Top Up</button>
+      <button class="wallet-action-btn">📤 Transfer</button>
+      <button class="wallet-action-btn">📊 Statement</button>
+    </div>
+  </div>
+  <div class="two-col">
+    <div>
+      <div class="inner-tabs">
+        <div class="inner-tab active">All Transactions</div>
+        <div class="inner-tab">Top Ups</div>
+        <div class="inner-tab">Purchases</div>
+      </div>
+      <div class="card">
+        <div class="card-body p-0">
+          <table class="table">
+            <thead><tr><th>Date</th><th>Description</th><th>Type</th><th>Amount</th><th>Balance</th></tr></thead>
+            <tbody>
+              <tr><td class="text-muted">14 Jun 09:15</td><td>Order #ORD-2026-0841</td><td><span class="tag tag-orange">Purchase</span></td><td class="text-negative">− VND 57,600</td><td>VND 450,000</td></tr>
+              <tr><td class="text-muted">13 Jun 00:00</td><td>HR Monthly Top Up – June</td><td><span class="tag tag-green">Top Up</span></td><td class="text-positive">+ VND 200,000</td><td>VND 507,600</td></tr>
+              <tr><td class="text-muted">13 Jun 14:30</td><td>Order #ORD-2026-0839</td><td><span class="tag tag-orange">Purchase</span></td><td class="text-negative">− VND 38,000</td><td>VND 307,600</td></tr>
+              <tr><td class="text-muted">13 Jun 11:00</td><td>Order #ORD-2026-0835</td><td><span class="tag tag-orange">Purchase</span></td><td class="text-negative">− VND 45,000</td><td>VND 345,600</td></tr>
+              <tr><td class="text-muted">12 Jun 09:05</td><td>Refund – Cancelled Order</td><td><span class="tag tag-blue">Refund</span></td><td class="text-positive">+ VND 26,000</td><td>VND 390,600</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="card mb-16">
+        <div class="card-header"><span class="card-title">📊 June 2026 Summary</span></div>
+        <div class="card-body">
+          <div class="order-summary-row"><span class="text-muted">Opening Balance</span><span>VND 285,600</span></div>
+          <div class="order-summary-row text-positive"><span>Total Top Ups</span><span>+ VND 200,000</span></div>
+          <div class="order-summary-row text-negative"><span>Total Spent</span><span>− VND 35,600</span></div>
+          <div class="order-summary-row total"><span>Current Balance</span><span class="text-brand">VND 450,000</span></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header"><span class="card-title">⬆ Quick Top Up</span></div>
+        <div class="card-body">
+          <div class="text-muted mb-12" style="font-size:12px">Select amount</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">
+            <button class="btn btn-secondary">+ VND 50K</button>
+            <button class="btn btn-secondary">+ VND 100K</button>
+            <button class="btn btn-secondary">+ VND 200K</button>
+            <button class="btn btn-secondary">+ VND 500K</button>
+          </div>
+          <input class="form-control mb-12" placeholder="Custom amount (VND)" />
+          <button class="btn btn-primary btn-block">Confirm Top Up</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ─────────────────────────── S9: REWARD POINTS ───────────────────────────────── -->
+<div class="page" id="s9">
+  <div class="page-header">
+    <div>
+      <div class="breadcrumb"><span onclick="goTo('s1')">Home</span> / Reward Points</div>
+      <div class="page-title">Reward Points</div>
+    </div>
+  </div>
+  <div class="wallet-hero" style="background:linear-gradient(135deg,#3d1080,#8142c8)">
+    <div class="wallet-label">TOTAL POINTS</div>
+    <div class="wallet-amount">2,340 pts</div>
+    <div class="wallet-sub">≈ VND 23,400 redeemable value · Level: Gold Member 🥇</div>
+    <div class="wallet-actions">
+      <button class="wallet-action-btn">🎁 Redeem</button>
+      <button class="wallet-action-btn">ℹ️ How to Earn</button>
+    </div>
+  </div>
+  <div class="two-col">
+    <div>
+      <div class="section-title">Points History</div>
+      <div class="card">
+        <div class="card-body p-0">
+          <table class="table">
+            <thead><tr><th>Date</th><th>Description</th><th>Points</th><th>Balance</th></tr></thead>
+            <tbody>
+              <tr><td class="text-muted">14 Jun</td><td>Purchase #ORD-2026-0841 (VND 57,600)</td><td class="text-positive">+ 58 pts</td><td>2,340 pts</td></tr>
+              <tr><td class="text-muted">13 Jun</td><td>Purchase #ORD-2026-0839 (VND 38,000)</td><td class="text-positive">+ 38 pts</td><td>2,282 pts</td></tr>
+              <tr><td class="text-muted">13 Jun</td><td>Purchase #ORD-2026-0835 (VND 45,000)</td><td class="text-positive">+ 45 pts</td><td>2,244 pts</td></tr>
+              <tr><td class="text-muted">10 Jun</td><td>Redemption – Order #ORD-2026-0811</td><td class="text-negative">− 100 pts</td><td>2,199 pts</td></tr>
+              <tr><td class="text-muted">01 Jun</td><td>Birthday Bonus 🎂</td><td class="text-positive">+ 500 pts</td><td>2,299 pts</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="card mb-16">
+        <div class="card-header"><span class="card-title">🏆 Membership Tier</span></div>
+        <div class="card-body">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+            <span style="font-size:32px">🥇</span>
+            <div><div style="font-weight:800;font-size:16px">Gold Member</div><div class="text-muted">Since March 2026</div></div>
+          </div>
+          <div class="text-muted mb-12" style="font-size:12px">Progress to Platinum</div>
+          <div class="progress-bar mb-12"><div class="progress-fill" style="width:74%;background:var(--sapCriticalColor)"></div></div>
+          <div class="flex justify-between" style="font-size:12px"><span class="text-muted">2,340 / 3,000 pts</span><span class="text-critical">660 pts to Platinum</span></div>
+          <div class="divider"></div>
+          <div class="text-muted" style="font-size:12px"><strong>Gold Benefits:</strong> 1 pt per VND 1,000 spent · Priority queue · 10% birthday voucher</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header"><span class="card-title">🎁 Redeem Points</span></div>
+        <div class="card-body">
+          <div class="form-group"><label class="form-label">Points to Redeem</label><input class="form-control" value="500" /></div>
+          <div class="info-box" style="margin-bottom:12px">500 pts = VND 5,000 discount on your next order</div>
+          <button class="btn btn-primary btn-block">Redeem Now</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ─────────────────────────── S10: VOUCHER CENTER ─────────────────────────────── -->
+<div class="page" id="s10">
+  <div class="page-header">
+    <div>
+      <div class="breadcrumb"><span onclick="goTo('s1')">Home</span> / Voucher Center</div>
+      <div class="page-title">Voucher Center</div>
+    </div>
+  </div>
+  <div class="inner-tabs">
+    <div class="inner-tab active">Available (4)</div>
+    <div class="inner-tab">Used (12)</div>
+    <div class="inner-tab">Expired (3)</div>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:12px">
+    <div class="voucher-card">
+      <div class="voucher-left"><div class="voucher-disc">20%</div><div class="voucher-type">OFF</div></div>
+      <div class="voucher-right">
+        <div class="voucher-name">Staff Loyalty Discount</div>
+        <div class="voucher-code">Code: STAFF20 · Min. spend: VND 50,000</div>
+        <div class="voucher-exp">⏰ Expires: 30 Jun 2026</div>
+      </div>
+      <button class="btn btn-primary btn-sm" style="margin:auto 12px auto 0;align-self:center" onclick="goTo('s4')">Use Now</button>
+    </div>
+    <div class="voucher-card">
+      <div class="voucher-left" style="background:linear-gradient(135deg,#256f3a,#38a169)"><div class="voucher-disc">FREE</div><div class="voucher-type">DRINK</div></div>
+      <div class="voucher-right">
+        <div class="voucher-name">Welcome Back Gift</div>
+        <div class="voucher-code">Code: WELCOME1 · 1 free drink up to VND 30,000</div>
+        <div class="voucher-exp">⏰ Expires: 21 Jun 2026</div>
+      </div>
+      <button class="btn btn-primary btn-sm" style="margin:auto 12px auto 0;align-self:center" onclick="goTo('s4')">Use Now</button>
+    </div>
+    <div class="voucher-card">
+      <div class="voucher-left" style="background:linear-gradient(135deg,#8142c8,#6b1fa0)"><div class="voucher-disc">500</div><div class="voucher-type">PTS</div></div>
+      <div class="voucher-right">
+        <div class="voucher-name">Gold Member Bonus Points</div>
+        <div class="voucher-code">Code: GOLD500 · 500 bonus points on next order</div>
+        <div class="voucher-exp">⏰ Expires: 31 Jul 2026</div>
+      </div>
+      <button class="btn btn-primary btn-sm" style="margin:auto 12px auto 0;align-self:center" onclick="goTo('s4')">Use Now</button>
+    </div>
+    <div class="voucher-card">
+      <div class="voucher-left" style="background:linear-gradient(135deg,#e76500,#c05000)"><div class="voucher-disc">VND</div><div class="voucher-type">15K</div></div>
+      <div class="voucher-right">
+        <div class="voucher-name">Flash Friday Deal</div>
+        <div class="voucher-code">Code: FRIDAY15 · Min. spend: VND 80,000</div>
+        <div class="voucher-exp">⏰ Expires: 14 Jun 2026 (Today!)</div>
+      </div>
+      <button class="btn btn-primary btn-sm" style="margin:auto 12px auto 0;align-self:center" onclick="goTo('s4')">Use Now</button>
+    </div>
+  </div>
+</div>
+
+<!-- ─────────────────────────── S11: FEEDBACK ───────────────────────────────────── -->
+<div class="page" id="s11">
+  <div class="page-header">
+    <div>
+      <div class="breadcrumb"><span onclick="goTo('s1')">Home</span> / Feedback</div>
+      <div class="page-title">Submit Feedback</div>
+    </div>
+  </div>
+  <div class="two-col">
+    <div>
+      <div class="card mb-16">
+        <div class="card-header"><span class="card-title">Rate Order #ORD-2026-0839</span></div>
+        <div class="card-body">
+          <div class="info-box mb-16">Rating this order: Pepsi, Chips, Yogurt · Delivered 13 Jun 14:30</div>
+          <div class="form-group">
+            <label class="form-label">⭐ Overall Order Experience</label>
+            <div style="display:flex;gap:8px;font-size:32px;cursor:pointer;margin:4px 0">
+              <span>★</span><span>★</span><span>★</span><span>★</span><span class="star-empty">★</span>
+            </div>
+            <div class="text-muted">4 / 5 — Very Good</div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">🍽️ Food Quality Rating</label>
+            <div style="display:flex;gap:8px;font-size:32px;cursor:pointer;margin:4px 0">
+              <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+            </div>
+            <div class="text-muted">5 / 5 — Excellent</div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">⚡ Speed of Service</label>
+            <div style="display:flex;gap:8px;font-size:32px;cursor:pointer;margin:4px 0">
+              <span>★</span><span>★</span><span>★</span><span class="star-empty">★</span><span class="star-empty">★</span>
+            </div>
+            <div class="text-muted">3 / 5 — Average</div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Rate Individual Items</label>
+            <div style="border:1px solid var(--sapList_BorderColor);border-radius:8px;overflow:hidden">
+              <div class="list-item" style="padding:10px 14px">
+                <div class="list-item-icon" style="width:36px;height:36px;font-size:18px">🥤</div>
+                <div class="list-item-body"><div style="font-size:12px;font-weight:600">Pepsi 330ml</div></div>
+                <div class="stars" style="font-size:16px;cursor:pointer">★★★★★</div>
+              </div>
+              <div class="list-item" style="padding:10px 14px">
+                <div class="list-item-icon" style="width:36px;height:36px;font-size:18px">🍟</div>
+                <div class="list-item-body"><div style="font-size:12px;font-weight:600">Potato Chips</div></div>
+                <div class="stars" style="font-size:16px;cursor:pointer">★★★★<span class="star-empty">★</span></div>
+              </div>
+              <div class="list-item" style="padding:10px 14px;border:none">
+                <div class="list-item-icon" style="width:36px;height:36px;font-size:18px">🥛</div>
+                <div class="list-item-body"><div style="font-size:12px;font-weight:600">Yogurt</div></div>
+                <div class="stars" style="font-size:16px;cursor:pointer">★★★★★</div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">💬 Comments & Suggestions</label>
+            <textarea class="form-control" rows="4" placeholder="Share your experience…">The food was great! The yogurt was fresh and delicious. Delivery was slightly delayed but the staff was polite.</textarea>
+          </div>
+          <div class="form-group">
+            <label class="form-label">📎 Attach Photo (Optional)</label>
+            <div style="border:2px dashed var(--sapField_BorderColor);border-radius:8px;padding:20px;text-align:center;color:var(--sapContent_LabelColor);cursor:pointer">
+              📷 Click or drag to upload
+            </div>
+          </div>
+          <button class="btn btn-primary btn-lg btn-block">Submit Feedback</button>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="card">
+        <div class="card-header"><span class="card-title">📊 Your Feedback Stats</span></div>
+        <div class="card-body">
+          <div style="text-align:center;margin-bottom:16px">
+            <div style="font-size:40px;font-weight:800;color:var(--sapBrandColor)">4.4</div>
+            <div class="stars" style="font-size:22px">★★★★☆</div>
+            <div class="text-muted">Your average rating · 12 reviews</div>
+          </div>
+          <div class="flex items-center gap-8 mb-8"><span style="font-size:12px;width:8px">5</span><div class="progress-bar" style="flex:1;height:8px"><div class="progress-fill" style="width:60%;background:#256f3a"></div></div><span class="text-muted" style="font-size:12px">7</span></div>
+          <div class="flex items-center gap-8 mb-8"><span style="font-size:12px;width:8px">4</span><div class="progress-bar" style="flex:1;height:8px"><div class="progress-fill" style="width:25%;background:#38a169"></div></div><span class="text-muted" style="font-size:12px">3</span></div>
+          <div class="flex items-center gap-8 mb-8"><span style="font-size:12px;width:8px">3</span><div class="progress-bar" style="flex:1;height:8px"><div class="progress-fill" style="width:17%;background:#e76500"></div></div><span class="text-muted" style="font-size:12px">2</span></div>
+          <div class="flex items-center gap-8 mb-8"><span style="font-size:12px;width:8px">2</span><div class="progress-bar" style="flex:1;height:8px"><div class="progress-fill" style="width:0%"></div></div><span class="text-muted" style="font-size:12px">0</span></div>
+          <div class="flex items-center gap-8"><span style="font-size:12px;width:8px">1</span><div class="progress-bar" style="flex:1;height:8px"><div class="progress-fill" style="width:0%"></div></div><span class="text-muted" style="font-size:12px">0</span></div>
+          <div class="divider"></div>
+          <div class="text-muted" style="font-size:12px;text-align:center">⭐ +25 Reward Points earned for submitting feedback</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ─────────────────────────── S12: CASHIER PORTAL ─────────────────────────────── -->
+<div class="page" id="s12">
+  <div class="page-header">
+    <div>
+      <div class="tag tag-orange mb-12">💰 Cashier Portal</div>
+      <div class="page-title">Order Management</div>
+      <div class="page-subtitle">Counter B1 · Mon 14 Jun 2026 · Shift: 07:00–15:00</div>
+    </div>
+    <div class="flex gap-8">
+      <button class="btn btn-secondary btn-sm">🔄 Refresh</button>
+      <button class="btn btn-primary btn-sm">📥 New Walk-in Order</button>
+    </div>
+  </div>
+  <div class="kpi-grid" style="grid-template-columns:repeat(4,1fr)">
+    <div class="kpi-card" style="border-left-color:var(--sapCriticalColor)"><div class="kpi-label">Pending</div><div class="kpi-value" style="color:var(--sapCriticalColor)">8</div><div class="kpi-delta">New orders</div><div class="kpi-icon">⏳</div></div>
+    <div class="kpi-card" style="border-left-color:#8142c8"><div class="kpi-label">Preparing</div><div class="kpi-value" style="color:#8142c8">5</div><div class="kpi-delta">In kitchen</div><div class="kpi-icon">👨‍🍳</div></div>
+    <div class="kpi-card" style="border-left-color:var(--sapPositiveColor)"><div class="kpi-label">Ready</div><div class="kpi-value" style="color:var(--sapPositiveColor)">3</div><div class="kpi-delta">For pickup</div><div class="kpi-icon">✅</div></div>
+    <div class="kpi-card"><div class="kpi-label">Completed Today</div><div class="kpi-value">47</div><div class="kpi-delta kpi-up">↑ 12% vs yesterday</div><div class="kpi-icon">📋</div></div>
+  </div>
+  <div class="three-col" style="gap:16px">
+    <!-- Pending -->
+    <div>
+      <div class="section-title"><span style="color:var(--sapCriticalColor)">⏳ Pending (8)</span></div>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div class="card">
+          <div class="card-body">
+            <div class="flex justify-between items-center mb-8"><span class="text-bold text-brand">#ORD-0849</span><span class="text-muted" style="font-size:11px">09:42 AM · 3 min ago</span></div>
+            <div class="text-muted" style="font-size:12px;margin-bottom:8px">🥤 Pepsi ×2 · 🍟 Chips ×1</div>
+            <div class="flex justify-between items-center"><span class="tag tag-blue">📦 Delivery F6</span><span class="text-bold">VND 42,000</span></div>
+            <button class="btn btn-success btn-sm btn-block mt-12">✓ Confirm Order</button>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <div class="flex justify-between items-center mb-8"><span class="text-bold text-brand">#ORD-0848</span><span class="text-muted" style="font-size:11px">09:40 AM · 5 min ago</span></div>
+            <div class="text-muted" style="font-size:12px;margin-bottom:8px">☕ Cà Phê ×1 · 🥪 Sandwich ×1</div>
+            <div class="flex justify-between items-center"><span class="tag tag-green">🏪 Pickup</span><span class="text-bold">VND 57,000</span></div>
+            <button class="btn btn-success btn-sm btn-block mt-12">✓ Confirm Order</button>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <div class="flex justify-between items-center mb-8"><span class="text-bold text-brand">#ORD-0847</span><span class="text-muted" style="font-size:11px">09:38 AM · 7 min ago</span></div>
+            <div class="text-muted" style="font-size:12px;margin-bottom:8px">🧋 Milk Tea ×2</div>
+            <div class="flex justify-between items-center"><span class="tag tag-blue">📦 Delivery F8</span><span class="text-bold">VND 70,000</span></div>
+            <button class="btn btn-success btn-sm btn-block mt-12">✓ Confirm Order</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Preparing -->
+    <div>
+      <div class="section-title"><span style="color:#8142c8">👨‍🍳 Preparing (5)</span></div>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div class="card" style="border:1.5px solid #8142c8">
+          <div class="card-body">
+            <div class="flex justify-between items-center mb-8"><span class="text-bold text-brand">#ORD-0841</span><span class="text-muted" style="font-size:11px">09:15 AM · ⏱ 12 min</span></div>
+            <div class="text-muted" style="font-size:12px;margin-bottom:8px">☕ Cà Phê ×1 · 🥪 Sandwich ×1 · 🥤 Pepsi ×1</div>
+            <div class="flex justify-between items-center"><span class="tag tag-green">🏪 Pickup · Alex N.</span><span class="text-bold">VND 57,600</span></div>
+            <div class="progress-bar mt-12"><div class="progress-fill" style="width:65%;background:#8142c8"></div></div>
+            <button class="btn btn-primary btn-sm btn-block mt-8">✅ Mark as Ready</button>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <div class="flex justify-between items-center mb-8"><span class="text-bold text-brand">#ORD-0840</span><span class="text-muted" style="font-size:11px">09:12 AM · ⏱ 15 min</span></div>
+            <div class="text-muted" style="font-size:12px;margin-bottom:8px">🍵 Trà Đào ×1 · 🍫 KitKat ×2</div>
+            <div class="flex justify-between items-center"><span class="tag tag-blue">📦 Delivery F5</span><span class="text-bold">VND 72,000</span></div>
+            <button class="btn btn-primary btn-sm btn-block mt-12">✅ Mark as Ready</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Ready -->
+    <div>
+      <div class="section-title"><span class="text-positive">✅ Ready (3)</span></div>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div class="card" style="border:1.5px solid var(--sapPositiveColor)">
+          <div class="card-body">
+            <div class="flex justify-between items-center mb-8"><span class="text-bold text-brand">#ORD-0836</span><span class="status-badge status-ready" style="font-size:11px">Ready</span></div>
+            <div class="text-muted" style="font-size:12px;margin-bottom:8px">💧 Aquafina ×3 · 🍜 Mì Hảo Hảo ×2</div>
+            <div class="flex justify-between items-center"><span class="tag tag-blue">📦 Delivery Bảo Quản</span><span class="text-bold">VND 44,000</span></div>
+            <button class="btn btn-success btn-sm btn-block mt-12">🛵 Assign Delivery</button>
+          </div>
+        </div>
+        <div class="card" style="border:1.5px solid var(--sapPositiveColor)">
+          <div class="card-body">
+            <div class="flex justify-between items-center mb-8"><span class="text-bold text-brand">#ORD-0834</span><span class="status-badge status-ready" style="font-size:11px">Ready</span></div>
+            <div class="text-muted" style="font-size:12px;margin-bottom:8px">☕ Cà Phê Đen ×1 · 🍟 Snacks ×1</div>
+            <div class="flex justify-between items-center"><span class="tag tag-green">🏪 Pickup</span><span class="text-bold">VND 30,000</span></div>
+            <button class="btn btn-success btn-sm btn-block mt-12">✅ Mark Collected</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ─────────────────────────── S13: DELIVERY DASHBOARD ─────────────────────────── -->
+<div class="page" id="s13">
+  <div class="page-header">
+    <div>
+      <div class="tag tag-orange mb-12">🛵 Delivery Staff Portal</div>
+      <div class="page-title">Delivery Dashboard</div>
+      <div class="page-subtitle">Van Nguyen · Staff ID: DEL-007 · On Duty</div>
+    </div>
+    <div class="flex gap-8 items-center">
+      <span class="status-badge status-ready"><span class="status-dot"></span>On Duty</span>
+      <button class="btn btn-secondary btn-sm">⏸ Go Off Duty</button>
+    </div>
+  </div>
+  <div class="kpi-grid" style="grid-template-columns:repeat(4,1fr)">
+    <div class="kpi-card" style="border-left-color:var(--sapCriticalColor)"><div class="kpi-label">Assigned</div><div class="kpi-value" style="color:var(--sapCriticalColor)">4</div><div class="kpi-icon">📦</div></div>
+    <div class="kpi-card" style="border-left-color:var(--sapBrandColor)"><div class="kpi-label">In Transit</div><div class="kpi-value" style="color:var(--sapBrandColor)">1</div><div class="kpi-icon">🛵</div></div>
+    <div class="kpi-card" style="border-left-color:var(--sapPositiveColor)"><div class="kpi-label">Completed Today</div><div class="kpi-value" style="color:var(--sapPositiveColor)">18</div><div class="kpi-icon">✅</div></div>
+    <div class="kpi-card"><div class="kpi-label">On-Time Rate</div><div class="kpi-value">96%</div><div class="kpi-delta kpi-up">↑ Excellent</div><div class="kpi-icon">⏱</div></div>
+  </div>
+  <div class="two-col">
+    <div>
+      <div class="section-title">📦 Assigned Orders</div>
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div class="card" style="border-left:4px solid var(--sapBrandColor)">
+          <div class="card-body">
+            <div class="flex justify-between items-center mb-10">
+              <span class="text-bold text-brand" style="font-size:16px">#ORD-0836</span>
+              <span class="status-badge status-delivering"><span class="status-dot"></span>In Transit</span>
+            </div>
+            <div class="three-col" style="gap:8px;margin-bottom:12px">
+              <div style="background:#f5f6f7;padding:8px;border-radius:6px"><div class="text-muted" style="font-size:10px">BUILDING</div><div style="font-size:13px;font-weight:700">Tower A</div></div>
+              <div style="background:#f5f6f7;padding:8px;border-radius:6px"><div class="text-muted" style="font-size:10px">FLOOR</div><div style="font-size:13px;font-weight:700">F6</div></div>
+              <div style="background:#f5f6f7;padding:8px;border-radius:6px"><div class="text-muted" style="font-size:10px">DEPT</div><div style="font-size:13px;font-weight:700">Engineering</div></div>
+            </div>
+            <div class="list-item" style="padding:6px 0;border:none">
+              <div class="list-item-body"><div class="text-muted" style="font-size:12px">💧 Aquafina ×3 · 🍜 Mì Hảo Hảo ×2</div><div class="text-muted" style="font-size:11px">Recipient: Nguyen Thanh Hung · Ext: 3412</div></div>
+              <span class="text-bold">VND 44,000</span>
+            </div>
+            <div class="flex gap-8 mt-8">
+              <button class="btn btn-primary" style="flex:1">📞 Call Recipient</button>
+              <button class="btn btn-success" style="flex:1">✅ Mark Delivered</button>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <div class="flex justify-between items-center mb-10">
+              <span class="text-bold text-brand" style="font-size:16px">#ORD-0843</span>
+              <span class="status-badge status-ready"><span class="status-dot"></span>Ready for Pickup</span>
+            </div>
+            <div class="three-col" style="gap:8px;margin-bottom:12px">
+              <div style="background:#f5f6f7;padding:8px;border-radius:6px"><div class="text-muted" style="font-size:10px">BUILDING</div><div style="font-size:13px;font-weight:700">Tower B</div></div>
+              <div style="background:#f5f6f7;padding:8px;border-radius:6px"><div class="text-muted" style="font-size:10px">FLOOR</div><div style="font-size:13px;font-weight:700">F8</div></div>
+              <div style="background:#f5f6f7;padding:8px;border-radius:6px"><div class="text-muted" style="font-size:10px">DEPT</div><div style="font-size:13px;font-weight:700">Finance</div></div>
+            </div>
+            <div class="list-item" style="padding:6px 0;border:none"><div class="list-item-body"><div class="text-muted" style="font-size:12px">☕ Cà Phê ×2 · 🍟 Chips ×1</div><div class="text-muted" style="font-size:11px">Recipient: Le Thi Mai · Ext: 8211</div></div><span class="text-bold">VND 62,000</span></div>
+            <button class="btn btn-primary btn-block mt-8">🛵 Start Delivery</button>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <div class="flex justify-between items-center mb-10"><span class="text-bold text-brand" style="font-size:16px">#ORD-0845</span><span class="status-badge status-ready"><span class="status-dot"></span>Ready for Pickup</span></div>
+            <div class="three-col" style="gap:8px;margin-bottom:12px">
+              <div style="background:#f5f6f7;padding:8px;border-radius:6px"><div class="text-muted" style="font-size:10px">BUILDING</div><div style="font-size:13px;font-weight:700">Tower A</div></div>
+              <div style="background:#f5f6f7;padding:8px;border-radius:6px"><div class="text-muted" style="font-size:10px">FLOOR</div><div style="font-size:13px;font-weight:700">F5</div></div>
+              <div style="background:#f5f6f7;padding:8px;border-radius:6px"><div class="text-muted" style="font-size:10px">DEPT</div><div style="font-size:13px;font-weight:700">HR</div></div>
+            </div>
+            <div class="list-item" style="padding:6px 0;border:none"><div class="list-item-body"><div class="text-muted" style="font-size:12px">🧋 Milk Tea ×1 · 🍫 KitKat ×1</div></div><span class="text-bold">VND 57,000</span></div>
+            <button class="btn btn-primary btn-block mt-8">🛵 Start Delivery</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="card mb-16">
+        <div class="card-header"><span class="card-title">🗺 Route Overview</span></div>
+        <div class="card-body">
+          <div style="background:linear-gradient(135deg,#f0f4ff,#e8f3ff);border-radius:10px;height:200px;display:flex;align-items:center;justify-content:center;font-size:40px;margin-bottom:12px">🗺️</div>
+          <div class="timeline">
+            <div class="timeline-item"><div class="timeline-dot done">✓</div><div class="timeline-label">Canteen B1</div><div class="timeline-sub">Pickup point</div></div>
+            <div class="timeline-item"><div class="timeline-dot active">🛵</div><div class="timeline-label">Tower A · F6 · Engineering</div><div class="timeline-sub">#ORD-0836 · In Transit</div></div>
+            <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-label" style="color:var(--sapContent_LabelColor)">Tower B · F8 · Finance</div><div class="timeline-sub">#ORD-0843 · Next</div></div>
+            <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-label" style="color:var(--sapContent_LabelColor)">Tower A · F5 · HR</div><div class="timeline-sub">#ORD-0845 · Queued</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header"><span class="card-title">📊 Today's Performance</span></div>
+        <div class="card-body">
+          <div class="order-summary-row"><span class="text-muted">Orders Completed</span><span class="text-bold">18</span></div>
+          <div class="order-summary-row"><span class="text-muted">On-Time Deliveries</span><span class="text-positive text-bold">17</span></div>
+          <div class="order-summary-row"><span class="text-muted">Avg Delivery Time</span><span class="text-bold">11 min</span></div>
+          <div class="order-summary-row"><span class="text-muted">Recipient Rating</span><span class="text-bold">⭐ 4.8</span></div>
+          <div class="order-summary-row"><span class="text-muted">Km Covered</span><span class="text-bold">2.4 km</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ─────────────────────────── S14: MANAGER DASHBOARD ──────────────────────────── -->
+<div class="page" id="s14">
+  <div class="page-header">
+    <div>
+      <div class="tag tag-blue mb-12">📊 Manager Portal</div>
+      <div class="page-title">Canteen Manager Dashboard</div>
+      <div class="page-subtitle">InnoTech HQ · Monday, 14 June 2026</div>
+    </div>
+    <div class="flex gap-8">
+      <button class="btn btn-secondary btn-sm">📅 Date Range</button>
+      <button class="btn btn-secondary btn-sm">📤 Export</button>
+      <button class="btn btn-primary btn-sm">⚙ Settings</button>
+    </div>
+  </div>
+
+  <!-- KPIs -->
+  <div class="kpi-grid">
+    <div class="kpi-card"><div class="kpi-label">Total Orders Today</div><div class="kpi-value">148</div><div class="kpi-delta kpi-up">↑ 18% vs yesterday</div><div class="kpi-icon">📋</div></div>
+    <div class="kpi-card" style="border-left-color:var(--sapPositiveColor)"><div class="kpi-label">Revenue Today</div><div class="kpi-value" style="font-size:20px;margin-top:8px">VND 6.2M</div><div class="kpi-delta kpi-up">↑ 12% vs yesterday</div><div class="kpi-icon">💰</div></div>
+    <div class="kpi-card" style="border-left-color:#8142c8"><div class="kpi-label">Avg Order Value</div><div class="kpi-value" style="font-size:20px;margin-top:8px">VND 41,900</div><div class="kpi-delta kpi-up">↑ 5% this month</div><div class="kpi-icon">📊</div></div>
+    <div class="kpi-card" style="border-left-color:var(--sapCriticalColor)"><div class="kpi-label">Vouchers Used</div><div class="kpi-value">34</div><div class="kpi-delta">VND 890,000 discounted</div><div class="kpi-icon">🎟️</div></div>
+    <div class="kpi-card" style="border-left-color:#0db0a0"><div class="kpi-label">Active Employees</div><div class="kpi-value">412</div><div class="kpi-delta">84 orders today</div><div class="kpi-icon">👤</div></div>
+    <div class="kpi-card" style="border-left-color:#f5a623"><div class="kpi-label">Employee Satisfaction</div><div class="kpi-value">4.4★</div><div class="kpi-delta kpi-up">↑ 0.2 this week</div><div class="kpi-icon">😊</div></div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <!-- Revenue Chart -->
+      <div class="card mb-16">
+        <div class="card-header">
+          <span class="card-title">📈 Revenue – Last 7 Days</span>
+          <div class="flex gap-8">
+            <button class="btn btn-ghost btn-sm">Week</button>
+            <button class="btn btn-primary btn-sm">Month</button>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="chart-placeholder">
+            <div class="bar-wrap"><div class="bar" style="height:85px"></div><div class="bar-label">Mon</div></div>
+            <div class="bar-wrap"><div class="bar" style="height:110px"></div><div class="bar-label">Tue</div></div>
+            <div class="bar-wrap"><div class="bar" style="height:95px"></div><div class="bar-label">Wed</div></div>
+            <div class="bar-wrap"><div class="bar" style="height:130px"></div><div class="bar-label">Thu</div></div>
+            <div class="bar-wrap"><div class="bar" style="height:75px"></div><div class="bar-label">Fri</div></div>
+            <div class="bar-wrap"><div class="bar" style="height:40px;opacity:.4"></div><div class="bar-label">Sat</div></div>
+            <div class="bar-wrap"><div class="bar" style="height:30px;opacity:.4"></div><div class="bar-label">Sun</div></div>
+          </div>
+          <div class="flex justify-between mt-8" style="font-size:11px;color:var(--sapContent_LabelColor)">
+            <span>Peak: Thu VND 8.3M</span><span>Avg: VND 5.9M/day</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Orders by Hour -->
+      <div class="card mb-16">
+        <div class="card-header"><span class="card-title">⏰ Orders by Hour (Today)</span></div>
+        <div class="card-body">
+          <div class="chart-placeholder" style="height:120px">
+            <div class="bar-wrap"><div class="bar" style="height:20px;background:#0db0a0"></div><div class="bar-label">7AM</div></div>
+            <div class="bar-wrap"><div class="bar" style="height:55px;background:#0db0a0"></div><div class="bar-label">8AM</div></div>
+            <div class="bar-wrap"><div class="bar" style="height:80px;background:#0db0a0"></div><div class="bar-label">9AM</div></div>
+            <div class="bar-wrap"><div class="bar" style="height:40px;background:#0db0a0"></div><div class="bar-label">10AM</div></div>
+            <div class="bar-wrap"><div class="bar" style="height:30px;background:#0db0a0"></div><div class="bar-label">11AM</div></div>
+            <div class="bar-wrap"><div class="bar" style="height:95px;background:var(--sapCriticalColor)"></div><div class="bar-label">12PM</div></div>
+            <div class="bar-wrap"><div class="bar" style="height:70px;background:var(--sapCriticalColor)"></div><div class="bar-label">1PM</div></div>
+            <div class="bar-wrap"><div class="bar" style="height:45px"></div><div class="bar-label">2PM</div></div>
+            <div class="bar-wrap"><div class="bar" style="height:35px"></div><div class="bar-label">3PM</div></div>
+            <div class="bar-wrap"><div class="bar" style="height:15px"></div><div class="bar-label">4PM</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Top Selling -->
+      <div class="card">
+        <div class="card-header"><span class="card-title">🏆 Top Selling Products</span></div>
+        <div class="card-body p-0">
+          <table class="table">
+            <thead><tr><th>#</th><th>Product</th><th>Category</th><th>Units Sold</th><th>Revenue</th><th>Trend</th></tr></thead>
+            <tbody>
+              <tr><td><span style="font-weight:800;color:#f5a623">🥇 1</span></td><td class="text-bold">Cà Phê Sữa Đá</td><td><span class="tag tag-blue">Coffee</span></td><td>89</td><td>VND 2.2M</td><td class="text-positive">↑ 22%</td></tr>
+              <tr><td><span style="font-weight:800;color:#9da3a8">🥈 2</span></td><td class="text-bold">Aquafina 500ml</td><td><span class="tag tag-blue">Drinks</span></td><td>74</td><td>VND 592K</td><td class="text-positive">↑ 8%</td></tr>
+              <tr><td><span style="font-weight:800;color:#c47722">🥉 3</span></td><td class="text-bold">Matcha Milk Tea</td><td><span class="tag tag-blue">Tea</span></td><td>61</td><td>VND 2.1M</td><td class="text-positive">↑ 15%</td></tr>
+              <tr><td>4</td><td class="text-bold">Sandwich Tuna</td><td><span class="tag tag-orange">Food</span></td><td>47</td><td>VND 1.5M</td><td class="text-positive">↑ 5%</td></tr>
+              <tr><td>5</td><td class="text-bold">Pepsi 330ml</td><td><span class="tag tag-blue">Drinks</span></td><td>43</td><td>VND 645K</td><td class="text-negative">↓ 3%</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <!-- Voucher Analytics -->
+      <div class="card mb-16">
+        <div class="card-header"><span class="card-title">🎟️ Voucher Usage</span></div>
+        <div class="card-body">
+          <div class="order-summary-row"><span class="text-muted">Vouchers Issued</span><span class="text-bold">152</span></div>
+          <div class="order-summary-row"><span class="text-muted">Vouchers Redeemed</span><span class="text-bold">34 (22%)</span></div>
+          <div class="order-summary-row"><span class="text-muted">Total Discount Given</span><span class="text-negative text-bold">− VND 890K</span></div>
+          <div class="divider"></div>
+          <div class="mb-12" style="font-size:12px;font-weight:700;color:var(--sapContent_LabelColor)">TOP VOUCHERS</div>
+          <div class="list-item" style="padding:8px 0">
+            <div class="list-item-body"><div class="text-bold" style="font-size:12px">STAFF20 · 20% Off</div><div class="text-muted">18 uses today</div></div>
+            <div><div class="progress-bar" style="width:100px"><div class="progress-fill" style="width:72%"></div></div></div>
+          </div>
+          <div class="list-item" style="padding:8px 0;border:none">
+            <div class="list-item-body"><div class="text-bold" style="font-size:12px">WELCOME1 · Free Drink</div><div class="text-muted">16 uses today</div></div>
+            <div><div class="progress-bar" style="width:100px"><div class="progress-fill" style="width:60%"></div></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Satisfaction -->
+      <div class="card mb-16">
+        <div class="card-header"><span class="card-title">😊 Employee Satisfaction</span></div>
+        <div class="card-body">
+          <div style="text-align:center;margin-bottom:12px">
+            <div style="font-size:36px;font-weight:900;color:var(--sapBrandColor)">4.4</div>
+            <div class="stars" style="font-size:20px">★★★★☆</div>
+            <div class="text-muted">Based on 89 ratings today</div>
+          </div>
+          <div class="order-summary-row"><span class="text-muted">Food Quality</span><span>⭐ 4.6</span></div>
+          <div class="order-summary-row"><span class="text-muted">Service Speed</span><span>⭐ 4.1</span></div>
+          <div class="order-summary-row"><span class="text-muted">Delivery Accuracy</span><span>⭐ 4.7</span></div>
+          <div class="order-summary-row"><span class="text-muted">App Experience</span><span>⭐ 4.5</span></div>
+          <div class="info-box mt-12" style="margin-bottom:0">💡 <strong>Insight:</strong> Service speed rated lowest. Consider adding 1 more cashier during 12–1PM peak.</div>
+        </div>
+      </div>
+
+      <!-- Payment Distribution -->
+      <div class="card mb-16">
+        <div class="card-header"><span class="card-title">💳 Payment Methods</span></div>
+        <div class="card-body">
+          <div class="list-item" style="padding:8px 0">
+            <div class="list-item-body"><div class="text-bold" style="font-size:12px">💳 Company Wallet</div></div>
+            <div class="flex items-center gap-8"><div class="progress-bar" style="width:80px"><div class="progress-fill" style="width:62%"></div></div><span class="text-muted" style="font-size:12px">62%</span></div>
+          </div>
+          <div class="list-item" style="padding:8px 0">
+            <div class="list-item-body"><div class="text-bold" style="font-size:12px">💰 Payroll Deduction</div></div>
+            <div class="flex items-center gap-8"><div class="progress-bar" style="width:80px"><div class="progress-fill" style="width:25%;background:var(--sapPositiveColor)"></div></div><span class="text-muted" style="font-size:12px">25%</span></div>
+          </div>
+          <div class="list-item" style="padding:8px 0;border:none">
+            <div class="list-item-body"><div class="text-bold" style="font-size:12px">⭐ Reward Points</div></div>
+            <div class="flex items-center gap-8"><div class="progress-bar" style="width:80px"><div class="progress-fill" style="width:13%;background:#8142c8"></div></div><span class="text-muted" style="font-size:12px">13%</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Delivery Stats -->
+      <div class="card">
+        <div class="card-header"><span class="card-title">🛵 Delivery Performance</span></div>
+        <div class="card-body">
+          <div class="order-summary-row"><span class="text-muted">Total Deliveries Today</span><span class="text-bold">63</span></div>
+          <div class="order-summary-row"><span class="text-muted">On-Time (≤20 min)</span><span class="text-positive text-bold">61 (97%)</span></div>
+          <div class="order-summary-row"><span class="text-muted">Avg Delivery Time</span><span class="text-bold">13 min</span></div>
+          <div class="order-summary-row"><span class="text-muted">Self Pickup Orders</span><span class="text-bold">85 (57%)</span></div>
+          <div class="order-summary-row"><span class="text-muted">Active Delivery Staff</span><span class="text-bold">3 of 3</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════ SCRIPT ═══════════════════════════════════════ -->
+<script>
+  const employeeScreens = [
+    { id: 's1',  label: '🏠 Home' },
+    { id: 's2',  label: '🍽️ Menu' },
+    { id: 's3',  label: '📄 Product Detail' },
+    { id: 's4',  label: '🛒 Cart' },
+    { id: 's5',  label: '💳 Checkout' },
+    { id: 's6',  label: '📍 Track Order' },
+    { id: 's7',  label: '📋 My Orders' },
+    { id: 's8',  label: '💳 Wallet' },
+    { id: 's9',  label: '⭐ Rewards' },
+    { id: 's10', label: '🎟️ Vouchers' },
+    { id: 's11', label: '💬 Feedback' },
+  ];
+  const cashierScreens  = [{ id: 's12', label: '💰 Order Management' }];
+  const deliveryScreens = [{ id: 's13', label: '🛵 Delivery Dashboard' }];
+  const managerScreens  = [{ id: 's14', label: '📊 Manager Dashboard' }];
+
+  let currentRole = 'employee';
+
+  function renderNav(screens) {
+    const nav = document.getElementById('screenNav');
+    nav.innerHTML = screens.map(s =>
+      `<button class="screen-tab ${document.getElementById(s.id).classList.contains('active') ? 'active' : ''}" onclick="goTo('${s.id}')">${s.label}</button>`
+    ).join('');
+  }
+
+  function switchRole(btn, role) {
+    document.querySelectorAll('.role-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentRole = role;
+    const maps = { employee: employeeScreens, cashier: cashierScreens, delivery: deliveryScreens, manager: managerScreens };
+    const screens = maps[role];
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    const firstScreen = document.getElementById(screens[0].id);
+    if (firstScreen) firstScreen.classList.add('active');
+    renderNav(screens);
+    updateShellTitle();
+  }
+
+  function goTo(id) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    const target = document.getElementById(id);
+    if (target) { target.classList.add('active'); }
+    const maps = { employee: employeeScreens, cashier: cashierScreens, delivery: deliveryScreens, manager: managerScreens };
+    const screens = maps[currentRole];
+    document.querySelectorAll('.screen-tab').forEach((tab, i) => {
+      tab.classList.toggle('active', screens[i] && screens[i].id === id);
+    });
+    updateShellTitle();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function updateShellTitle() {
+    const active = document.querySelector('.page.active');
+    const tab = document.querySelector('.screen-tab.active');
+    if (tab) document.getElementById('shellAppTitle').textContent = tab.textContent.replace(/^[^\s]+\s/, '');
+  }
+
+  // Init
+  renderNav(employeeScreens);
+  document.querySelectorAll('.screen-tab')[0]?.classList.add('active');
+</script>
 </body>
 </html>
